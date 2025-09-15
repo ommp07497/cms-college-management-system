@@ -1,1 +1,0 @@
-# cms-college-management-system
