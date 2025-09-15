@@ -1,0 +1,13 @@
+{
+  "name": "cms-college-management-system",
+  "version": "1.0.0",
+  "description": "College management system with student registration",
+  "main": "index.js",
+  "scripts": {
+    "build": "echo No build step needed",
+    "start": "echo Starting app"
+  },
+  "dependencies": {
+    "pg": "^8.11.3"
+  }
+}
