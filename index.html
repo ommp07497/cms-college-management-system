@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>College Management System</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    #loginMenu { transition: all 0.2s ease-in-out; }
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-900">
+
+  <!-- 🔹 Navbar -->
+  <header class="bg-white shadow-md sticky top-0 z-50">
+  <div class="max-w-7xl mx-auto flex items-center justify-between p-4">
+    
+    <!-- 🔹 College Logo (Left Corner) -->
+    <div class="flex items-center">
+      <img src="nc_logo.jpeg" alt="College Logo" class="h-10 w-auto">
+    </div>
+
+    <!-- 🔹 Login Button (Right Corner) -->
+    <div class="relative">
+      <button id="registerBtn" class="bg-indigo-600 text-white font-semibold px-5 py-2 rounded-full shadow-md hover:bg-indigo-700">
+        Register
+      </button>
+      <button id="loginBtn" class="bg-indigo-600 text-white font-semibold px-5 py-2 rounded-full shadow-md hover:bg-indigo-700">
+        Login ⬇
+      </button>
+      <!-- Dropdown Menu -->
+      <div id="loginMenu" class="absolute right-0 hidden bg-white shadow-lg rounded-lg mt-2 w-48 text-gray-800">
+        <a href="student-login.html" class="block px-4 py-2 hover:bg-indigo-100">👨‍🎓 Student Login</a>
+        <a href="teacher-login.html" class="block px-4 py-2 hover:bg-indigo-100">👩‍🏫 Teacher Login</a>
+        <a href="admin-login.html" class="block px-4 py-2 hover:bg-indigo-100">🛠️ Admin Login</a>
+      </div>
+    </div>
+
+  </div>
+</header>
+  <!-- 🔹 Hero Section -->
+  <section class="bg-gradient-to-r from-indigo-600 to-purple-600 text-white">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center p-8 md:p-12">
+      <div class="flex-1 space-y-5 text-center md:text-left">
+        <h2 class="text-3xl md:text-5xl font-extrabold leading-tight">
+          Welcome to NC College Management System
+        </h2>
+        <p class="text-lg">A smart platform for Students, Teachers, and Administrators.</p>
+      </div>
+      <div class="flex-1 mt-8 md:mt-0">
+        <img src="principal.jpg" alt="College" class="w-full max-w-sm mx-auto md:max-w-lg">
+      </div>
+    </div>
+  </section>
+
+  <!-- 🔹 Features Section -->
+  <section class="max-w-7xl mx-auto py-12 px-6">
+    <h3 class="text-3xl font-bold text-center mb-10">System Features</h3>
+    <div class="grid gap-8 sm:grid-cols-2 md:grid-cols-3">
+      <div class="bg-white p-6 rounded-2xl shadow-md hover:shadow-xl transition text-center">
+        <h4 class="font-semibold text-lg mb-2">📅 Attendance</h4>
+        <p class="text-gray-600">Students can check attendance, Teachers can mark attendance.</p>
+      </div>
+      <div class="bg-white p-6 rounded-2xl shadow-md hover:shadow-xl transition text-center">
+        <h4 class="font-semibold text-lg mb-2">📊 Marks & Grades</h4>
+        <p class="text-gray-600">View marks and performance reports uploaded by teachers.</p>
+      </div>
+      <div class="bg-white p-6 rounded-2xl shadow-md hover:shadow-xl transition text-center">
+        <h4 class="font-semibold text-lg mb-2">📝 Assignments</h4>
+        <p class="text-gray-600">Upload and download assignments with deadlines.</p>
+      </div>
+      <div class="bg-white p-6 rounded-2xl shadow-md hover:shadow-xl transition text-center">
+        <h4 class="font-semibold text-lg mb-2">📢 Notices</h4>
+        <p class="text-gray-600">Latest announcements from the college admin and faculty.</p>
+      </div>
+      <div class="bg-white p-6 rounded-2xl shadow-md hover:shadow-xl transition text-center">
+        <h4 class="font-semibold text-lg mb-2">📚 Courses</h4>
+        <p class="text-gray-600">Browse subjects, syllabi, and course information.</p>
+      </div>
+      <div class="bg-white p-6 rounded-2xl shadow-md hover:shadow-xl transition text-center">
+        <h4 class="font-semibold text-lg mb-2">👤 Profile</h4>
+        <p class="text-gray-600">Students and teachers can manage their personal information.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 🔹 Notice Board Preview -->
+  <section class="bg-gray-100 py-10 px-6">
+    <h3 class="text-3xl font-bold text-center mb-6">Latest Notices</h3>
+    <div class="max-w-4xl mx-auto bg-white p-6 rounded-xl shadow-md">
+      <ul class="space-y-3 text-sm sm:text-base">
+        <li class="border-b pb-2">📢 Mid-Sem Exams start from 20th Sept.</li>
+        <li class="border-b pb-2">📢 College fest registration closes on 15th Sept.</li>
+        <li class="border-b pb-2">📢 Placement drive on 25th Sept for BCA final year.</li>
+      </ul>
+      <div class="text-right mt-4">
+        <a href="notices.html" class="text-indigo-600 font-semibold hover:underline">View All →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 🔹 Footer -->
+ <footer class="bg-gray-900 text-gray-300 p-4 text-center space-y-2">
+  <p><u><b>CONTACT US</b></u></p>
+  <p>🏫 N.C. (Narasingh Choudhury) Autonomous College, Jajpur</p>
+  <p>📍 Abdalpur, Jajpur Town, Jajpur-755001, Odisha, India</p>
+  <p>📞 06728222032 | ✉️ ncacjajpur@gmail.com</p>
+  <p>🌐 www.ncac.in</p>
+</footer>
+  <!-- 🔹 Student Registration Modal -->
+<div id="registerModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex justify-center items-center">
+  <div class="bg-white rounded-xl w-11/12 max-w-md p-8 relative animate-slideDown">
+    <span id="closeModal" class="absolute top-3 right-4 text-gray-500 text-2xl cursor-pointer hover:text-gray-800">&times;</span>
+    <h2 class="text-2xl font-bold text-center mb-6">Student Registration</h2>
+    <form id="studentRegisterForm" class="space-y-4">
+      <div>
+        <label class="block text-gray-700">Full Name</label>
+        <input type="text" placeholder="Enter full name" class="w-full border border-gray-300 rounded-lg p-2" required>
+      </div>
+      <div>
+        <label class="block text-gray-700">Roll Number</label>
+        <input type="text" placeholder="Enter roll number" class="w-full border border-gray-300 rounded-lg p-2" required>
+      </div>
+      <div>
+        <label class="block text-gray-700">Email</label>
+        <input type="email" placeholder="Enter email" class="w-full border border-gray-300 rounded-lg p-2" required>
+      </div>
+      <div>
+        <label class="block text-gray-700">Password</label>
+        <input type="password" placeholder="Enter password" class="w-full border border-gray-300 rounded-lg p-2" required>
+      </div>
+      
+      <button type="submit" class="w-full bg-indigo-600 text-white py-2 rounded-lg font-semibold hover:bg-indigo-700">Register</button>
+    </form>
+  </div>
+</div>
+
+<style>
+@keyframes slideDown {
+  from {transform: translateY(-50px); opacity: 0;}
+  to {transform: translateY(0); opacity: 1;}
+}
+.animate-slideDown {
+  animation: slideDown 0.4s ease-out;
+}
+</style>
+  
+  <!-- 🔹 Login Modal -->
+<div id="loginModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex justify-center items-center">
+  <div class="bg-white rounded-xl w-11/12 max-w-md p-8 relative animate-slideDown">
+    <span id="closeLoginModal" class="absolute top-3 right-4 text-gray-500 text-2xl cursor-pointer hover:text-gray-800">&times;</span>
+    <h2 id="loginTitle" class="text-2xl font-bold text-center mb-6">Login</h2>
+    <form id="loginForm" class="space-y-4">
+      <div>
+        <label class="block text-gray-700">Email</label>
+        <input type="email" placeholder="Enter your email" class="w-full border border-gray-300 rounded-lg p-2" required>
+      </div>
+      <div>
+        <label class="block text-gray-700">Password</label>
+        <input type="password" placeholder="Enter your password" class="w-full border border-gray-300 rounded-lg p-2" required>
+      </div>
+      <button type="submit" class="w-full bg-indigo-600 text-white py-2 rounded-lg font-semibold hover:bg-indigo-700">Login</button>
+    </form>
+  </div>
+</div>
+  <!-- 🔹 Script -->
+  <script>
+  const loginBtn = document.getElementById('loginBtn');
+  const loginMenu = document.getElementById('loginMenu');
+
+  const registerBtn = document.getElementById('registerBtn');
+  const registerModal = document.getElementById('registerModal');
+  const closeModal = document.getElementById('closeModal');
+
+  const loginModal = document.getElementById('loginModal');
+  const closeLoginModal = document.getElementById('closeLoginModal');
+  const loginLinks = document.querySelectorAll('#loginMenu a');
+  const loginTitle = document.getElementById('loginTitle');
+  const loginForm = document.getElementById('loginForm');
+
+  // 🔹 Toggle login dropdown
+  loginBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    loginMenu.classList.toggle('hidden');
+    registerModal.classList.add('hidden'); // ✅ close register if open
+  });
+
+  // 🔹 Open register modal
+  registerBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    registerModal.classList.remove('hidden');
+    loginMenu.classList.add('hidden'); // ✅ close login if open
+  });
+
+  // 🔹 Close register modal
+  closeModal.addEventListener('click', () => {
+    registerModal.classList.add('hidden');
+  });
+
+  // 🔹 Open login modal from dropdown links
+  loginLinks.forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      const role = link.textContent.split(' ')[1]; // Student / Teacher / Admin
+      loginTitle.textContent = `${role} Login`;
+      loginModal.classList.remove('hidden');
+      loginMenu.classList.add('hidden'); // ✅ hide dropdown
+      loginForm.reset();
+    });
+  });
+
+  // 🔹 Close login modal
+  closeLoginModal.addEventListener('click', () => {
+    loginModal.classList.add('hidden');
+  });
+
+  // 🔹 Close when clicking outside
+  window.addEventListener('click', (e) => {
+    if (!loginBtn.contains(e.target) && !loginMenu.contains(e.target)) {
+      loginMenu.classList.add('hidden');
+    }
+    if (e.target === registerModal) {
+      registerModal.classList.add('hidden');
+    }
+    if (e.target === loginModal) {
+      loginModal.classList.add('hidden');
+    }
+  });
+</script>
+</body>
+</html>
