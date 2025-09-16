@@ -171,6 +171,14 @@
     <p>📞 06728222032 | ✉️ ncacjajpur@gmail.com</p>
     <p>🌐 www.ncac.in</p>
   </footer>
-
+ <script>
+     // Logout with confirmation
+  document.getElementById("logoutBtn").addEventListener("click", () => {
+    let confirmLogout = confirm("Are you sure you want to log out?");
+    if (confirmLogout) {
+      window.location.href = "index.html"; // back to login
+    }
+  });
+  </script>
 </body>
 </html>
