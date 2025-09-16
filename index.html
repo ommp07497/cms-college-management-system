@@ -230,10 +230,15 @@ studentRegisterForm.addEventListener('submit', async (e) => {
       body: JSON.stringify(data)
     });
 
-    const result = await res.json();
-    alert(result.message);
-    studentRegisterForm.reset();
-    registerModal.classList.add('hidden');
+   const result = await res.json();
+
+    if (res.ok) {
+      alert("✅ Registered successfully! User ID: " + result.userId);
+      studentRegisterForm.reset();
+      registerModal.classList.add('hidden');
+    } else {
+      alert("❌ Failed to register: " + result.error);
+    }
   } catch (err) {
     console.error(err);
     alert('Failed to register.');
