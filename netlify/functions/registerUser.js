@@ -23,12 +23,18 @@ exports.handler = async (event) => {
 
     return {
       statusCode: 200,
-      body: JSON.stringify({ message: "User registered!", userId: result.rows[0].id }),
+      body: JSON.stringify({
+        message: "User registered!",
+        userId: result.rows[0].id,
+      }),
     };
   } catch (err) {
     return {
       statusCode: 500,
-      body: JSON.stringify({ message: "Failed to register", error: err.message }),
+      body: JSON.stringify({
+        message: "Failed to register",
+        error: err.message,   // <-- send actual error
+      }),
     };
   }
 };
