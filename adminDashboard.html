@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 text-gray-900">
+
+  <!-- 🔹 Navbar -->
+  <header class="bg-gray-800 text-white p-4 shadow-md flex justify-between items-center">
+    <h1 class="text-2xl font-bold">🛠️ Admin Dashboard</h1>
+    <button id="logoutBtn" class="bg-red-500 px-4 py-2 rounded-lg hover:bg-red-600">Logout</button>
+  </header>
+
+  <!-- 🔹 Main Content -->
+  <main class="max-w-7xl mx-auto p-6 grid gap-6 md:grid-cols-3">
+
+    <!-- Profile Card -->
+    <div class="bg-white p-6 rounded-xl shadow-md">
+      <h2 class="text-xl font-semibold mb-3">👤 Profile</h2>
+      <p><b>Name:</b> Admin User</p>
+      <p><b>Email:</b> admin@example.com</p>
+      <p><b>Role:</b> Super Administrator</p>
+    </div>
+
+    <!-- Manage Students -->
+    <div class="bg-white p-6 rounded-xl shadow-md">
+      <h2 class="text-xl font-semibold mb-3">👨‍🎓 Manage Students</h2>
+      <p class="text-gray-600 mb-3">Add, update, or remove student records.</p>
+      <button class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700">
+        Manage Students
+      </button>
+    </div>
+
+    <!-- Manage Teachers -->
+    <div class="bg-white p-6 rounded-xl shadow-md">
+      <h2 class="text-xl font-semibold mb-3">👩‍🏫 Manage Teachers</h2>
+      <p class="text-gray-600 mb-3">Add, update, or remove teacher records.</p>
+      <button class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700">
+        Manage Teachers
+      </button>
+    </div>
+
+    <!-- Manage Courses -->
+    <div class="bg-white p-6 rounded-xl shadow-md">
+      <h2 class="text-xl font-semibold mb-3">📚 Manage Courses</h2>
+      <p class="text-gray-600 mb-3">Create and update course details.</p>
+      <button class="bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600">
+        Manage Courses
+      </button>
+    </div>
+
+    <!-- Manage Notices -->
+    <div class="bg-white p-6 rounded-xl shadow-md">
+      <h2 class="text-xl font-semibold mb-3">📢 Manage Notices</h2>
+      <p class="text-gray-600 mb-3">Publish or remove college notices.</p>
+      <button class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700">
+        Manage Notices
+      </button>
+    </div>
+
+    <!-- Reports & Analytics -->
+    <div class="bg-white p-6 rounded-xl shadow-md">
+      <h2 class="text-xl font-semibold mb-3">📊 Reports & Analytics</h2>
+      <p class="text-gray-600 mb-3">View performance reports and system data.</p>
+      <button class="bg-pink-600 text-white px-4 py-2 rounded-lg hover:bg-pink-700">
+        View Reports
+      </button>
+    </div>
+
+  </main>
+
+  <!-- 🔹 Footer -->
+  <footer class="bg-gray-900 text-gray-300 text-center p-4 mt-6">
+    <p>&copy; 2025 N.C. College | Admin Dashboard</p>
+  </footer>
+
+<script>
+  // Logout with confirmation
+  document.getElementById("logoutBtn").addEventListener("click", () => {
+    let confirmLogout = confirm("Are you sure you want to log out?");
+    if (confirmLogout) {
+      window.location.href = "index.html"; // back to login
+    }
+  });
+</script>
+
+</body>
+</html>

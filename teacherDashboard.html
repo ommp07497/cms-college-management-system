@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Teacher Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 text-gray-900">
+
+  <!-- 🔹 Navbar -->
+  <header class="bg-indigo-700 text-white p-4 shadow-md flex justify-between items-center">
+    <h1 class="text-2xl font-bold">👩‍🏫 Teacher Dashboard</h1>
+    <button id="logoutBtn" class="bg-red-500 px-4 py-2 rounded-lg hover:bg-red-600">Logout</button>
+  </header>
+
+  <!-- 🔹 Main Content -->
+  <main class="max-w-7xl mx-auto p-6 grid gap-6 md:grid-cols-3">
+
+    <!-- Profile Card -->
+    <div class="bg-white p-6 rounded-xl shadow-md">
+      <h2 class="text-xl font-semibold mb-3">👤 Profile</h2>
+      <p><b>Name:</b> John Doe</p>
+      <p><b>Email:</b> teacher@example.com</p>
+      <p><b>Subject:</b> Computer Science</p>
+    </div>
+
+    <!-- Attendance Management -->
+    <div class="bg-white p-6 rounded-xl shadow-md">
+      <h2 class="text-xl font-semibold mb-3">📅 Attendance</h2>
+      <p class="text-gray-600 mb-3">Mark attendance for students.</p>
+      <button class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700">
+        Mark Attendance
+      </button>
+    </div>
+
+    <!-- Upload Marks -->
+    <div class="bg-white p-6 rounded-xl shadow-md">
+      <h2 class="text-xl font-semibold mb-3">📊 Marks & Grades</h2>
+      <p class="text-gray-600 mb-3">Upload student marks and view reports.</p>
+      <button class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700">
+        Upload Marks
+      </button>
+    </div>
+
+    <!-- Assignments -->
+    <div class="bg-white p-6 rounded-xl shadow-md">
+      <h2 class="text-xl font-semibold mb-3">📝 Assignments</h2>
+      <p class="text-gray-600 mb-3">Upload assignments for students.</p>
+      <button class="bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600">
+        Upload Assignment
+      </button>
+    </div>
+
+    <!-- Notices -->
+    <div class="bg-white p-6 rounded-xl shadow-md">
+      <h2 class="text-xl font-semibold mb-3">📢 Notices</h2>
+      <p class="text-gray-600 mb-3">Publish announcements for students.</p>
+      <button class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700">
+        Post Notice
+      </button>
+    </div>
+
+    <!-- Student Queries -->
+    <div class="bg-white p-6 rounded-xl shadow-md">
+      <h2 class="text-xl font-semibold mb-3">💬 Student Queries</h2>
+      <p class="text-gray-600 mb-3">View and reply to student queries.</p>
+      <button class="bg-pink-600 text-white px-4 py-2 rounded-lg hover:bg-pink-700">
+        View Queries
+      </button>
+    </div>
+
+  </main>
+
+  <!-- 🔹 Footer -->
+  <footer class="bg-gray-900 text-gray-300 text-center p-4 mt-6">
+    <p>&copy; 2025 N.C. College | Teacher Dashboard</p>
+  </footer>
+
+  <script>
+     // Logout with confirmation
+  document.getElementById("logoutBtn").addEventListener("click", () => {
+    let confirmLogout = confirm("Are you sure you want to log out?");
+    if (confirmLogout) {
+      window.location.href = "index.html"; // back to login
+    }
+  });
+  </script>
+
+</body>
+</html>
