@@ -61,6 +61,63 @@ window.addEventListener('click', (e) => {
     loginModal.classList.add('hidden');
   }
 });
+loginLinks.forEach(link => {
+  link.addEventListener('click', (e) => {
+    e.preventDefault();
+    const role = link.textContent.replace(/^[^\w]+/, '').split(' ')[0]; 
+    loginTitle.textContent = `${role} Login`;
+    loginModal.classList.remove('hidden');
+    loginMenu.classList.add('hidden'); 
+    loginForm.reset();
+
+    // store role in a hidden input
+    let roleInput = loginForm.querySelector('input[name="role"]');
+    if (!roleInput) {
+      roleInput = document.createElement('input');
+      roleInput.type = 'hidden';
+      roleInput.name = 'role';
+      loginForm.appendChild(roleInput);
+    }
+    roleInput.value = role;
+  });
+});
+loginForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const formData = new FormData(loginForm);
+  const data = {
+    email: formData.get("email"),
+    password: formData.get("password"),
+    role: formData.get("role"),
+  };
+
+  try {
+    const res = await fetch("/.netlify/functions/loginUser", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
+
+    const result = await res.json();
+
+    if (res.ok) {
+      alert(`✅ Welcome, ${result.fullName}!`);
+
+      loginForm.reset();
+      loginModal.classList.add("hidden");
+
+      // Redirect based on role
+      if (result.role === "Student") window.location.href = "/student-dashboard.html";
+      else if (result.role === "Teacher") window.location.href = "/teacher-dashboard.html";
+      else if (result.role === "Admin") window.location.href = "/admin-dashboard.html";
+    } else {
+      alert(`❌ ${result.message}`);
+    }
+  } catch (err) {
+    console.error(err);
+    alert("Failed to login");
+  }
+});
 
 const studentRegisterForm = document.getElementById('studentRegisterForm');
 
