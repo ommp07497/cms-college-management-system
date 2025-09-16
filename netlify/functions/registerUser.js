@@ -1,8 +1,10 @@
 const { Client } = require("pg");
 
+// ✅ Log DATABASE_URL to check if it's correct
+console.log("DATABASE_URL:", process.env.DATABASE_URL);
+
 exports.handler = async (event) => {
   try {
-    // ✅ Match frontend field names (index.html)
     const { fullName, rollNumber, email, password } = JSON.parse(event.body);
 
     const client = new Client({
@@ -34,7 +36,7 @@ exports.handler = async (event) => {
       statusCode: 500,
       body: JSON.stringify({
         message: "Failed to register",
-        error: err.message,  // ✅ helpful for debugging
+        error: err.message,
       }),
     };
   }
