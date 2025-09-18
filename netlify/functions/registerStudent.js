@@ -19,7 +19,6 @@ exports.handler = async (event) => {
 
     await client.connect();
 
-    // Insert into users (always role = student here)
     const insertUser = `
       INSERT INTO users (full_name, email, password, role)
       VALUES ($1, $2, $3, 'student')
@@ -28,7 +27,6 @@ exports.handler = async (event) => {
     const userRes = await client.query(insertUser, [fullName, email, password]);
     const userId = userRes.rows[0].id;
 
-    // Insert into student_details
     const insertDetails = `
       INSERT INTO student_details (user_id, roll_number, department, year_of_study)
       VALUES ($1, $2, $3, $4);
