@@ -98,7 +98,7 @@ loginForm.addEventListener("submit", async (e) => {
       loginModal.classList.add("hidden");
 
       // Redirect based on role
-      if (result.role === "Student") window.location.href = "/studentDashboard.html";
+      if (result.role === "Student") window.location.href = "/Student_dashboard.html";
       else if (result.role === "Teacher") window.location.href = "/teacherDashboard.html";
       else if (result.role === "Admin") window.location.href = "/adminDashboard.html";
     } else {
