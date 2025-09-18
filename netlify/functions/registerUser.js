@@ -1,74 +1,49 @@
 const { Client } = require("pg");
 
 exports.handler = async (event) => {
-  console.log("DATABASE_URL:", process.env.DATABASE_URL);
-
   if (event.httpMethod !== "POST") {
-    return {
-      statusCode: 405,
-      body: JSON.stringify({ message: "Method Not Allowed" }),
-    };
+    return { statusCode: 405, body: "Method Not Allowed" };
   }
 
   try {
-    const { fullName, rollNumber, email, password } = JSON.parse(event.body);
+    const { fullName, rollNumber, email, password, department, yearOfStudy } = JSON.parse(event.body);
 
-    if (!fullName || !rollNumber || !email || !password) {
-      return {
-        statusCode: 400,
-        body: JSON.stringify({ message: "All fields are required" }),
-      };
+    if (!email || !password || !fullName || !rollNumber) {
+      return { statusCode: 400, body: JSON.stringify({ message: "Required fields missing" }) };
     }
 
-    // ✅ Connect to Neon
     const client = new Client({
       connectionString: process.env.DATABASE_URL,
-      ssl: { rejectUnauthorized: false },
+      ssl: { rejectUnauthorized: false }
     });
 
     await client.connect();
 
-    // Check if email already exists
-    const checkEmail = await client.query(
-      "SELECT id FROM students WHERE email = $1",
-      [email]
+    // Step 1: insert into users
+    const userRes = await client.query(
+      `INSERT INTO users (full_name, email, password, role)
+       VALUES ($1, $2, $3, 'student')
+       RETURNING id`,
+      [fullName, email, password]
     );
 
-    if (checkEmail.rows.length > 0) {
-      await client.end();
-      return {
-        statusCode: 409,
-        body: JSON.stringify({ message: "Email already registered" }),
-      };
-    }
+    const userId = userRes.rows[0].id;
 
-    // Insert new student
-    const insertQuery = `
-      INSERT INTO students (full_name, roll_number, email, password)
-      VALUES ($1, $2, $3, $4)
-      RETURNING id;
-    `;
-    const values = [fullName, rollNumber, email, password];
-
-    const result = await client.query(insertQuery, values);
+    // Step 2: insert into student_details
+    await client.query(
+      `INSERT INTO student_details (user_id, roll_number, department, year_of_study)
+       VALUES ($1, $2, $3, $4)`,
+      [userId, rollNumber, department || null, yearOfStudy || null]
+    );
 
     await client.end();
 
     return {
       statusCode: 200,
-      body: JSON.stringify({
-        message: "User registered successfully!",
-        userId: result.rows[0].id,
-      }),
+      body: JSON.stringify({ message: "Student registered successfully", userId }),
     };
   } catch (err) {
-    console.error("Registration Error:", err);
-    return {
-      statusCode: 500,
-      body: JSON.stringify({
-        message: "Failed to register",
-        error: err.message,
-      }),
-    };
+    console.error(err);
+    return { statusCode: 500, body: JSON.stringify({ error: err.message }) };
   }
 };
