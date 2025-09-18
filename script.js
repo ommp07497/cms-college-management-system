@@ -116,12 +116,13 @@ studentRegisterForm.addEventListener('submit', async (e) => {
 
   const formData = new FormData(studentRegisterForm);
   const data = {
-    fullName: formData.get('fullName'),
-    rollNumber: formData.get('rollNumber'),
-    email: formData.get('email'),
-    password: formData.get('password'),
-  };
-
+  fullName: formData.get('fullName'),
+  rollNumber: formData.get('rollNumber'),
+  email: formData.get('email'),
+  password: formData.get('password'),
+  department: formData.get('department'),
+  yearOfStudy: formData.get('yearOfStudy')
+};
   try {
     const res = await fetch('/.netlify/functions/registerStudent', { // ✅ fixed name
       method: 'POST',
