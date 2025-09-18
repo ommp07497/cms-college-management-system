@@ -6,10 +6,10 @@ exports.handler = async (event) => {
   }
 
   try {
-    const { email, password, role } = JSON.parse(event.body);
+    const { email, password } = JSON.parse(event.body);
 
-    if (!email || !password || !role) {
-      return { statusCode: 400, body: JSON.stringify({ message: "All fields are required" }) };
+    if (!email || !password) {
+      return { statusCode: 400, body: JSON.stringify({ message: "Email and password required" }) };
     }
 
     const client = new Client({
@@ -19,14 +19,10 @@ exports.handler = async (event) => {
 
     await client.connect();
 
-    let tableName = "";
-    if (role === "Student") tableName = "students";
-    else if (role === "Teacher") tableName = "teachers";
-    else if (role === "Admin") tableName = "admins";
-    else throw new Error("Invalid role");
-
-    const query = `SELECT id, full_name, password FROM ${tableName} WHERE email=$1`;
-    const result = await client.query(query, [email]);
+    const result = await client.query(
+      `SELECT id, full_name, role, password FROM users WHERE email=$1`,
+      [email]
+    );
 
     await client.end();
 
@@ -38,9 +34,9 @@ exports.handler = async (event) => {
       statusCode: 200,
       body: JSON.stringify({
         message: "Login successful",
-        role,
         userId: result.rows[0].id,
         fullName: result.rows[0].full_name,
+        role: result.rows[0].role
       }),
     };
   } catch (err) {
