@@ -17,22 +17,18 @@
         <img src="nc_logo.jpeg" alt="College Logo" class="h-10 w-auto">
       </div>
 
-      <!-- 🔹 Login Button (Right Corner) -->
-      <div class="relative">
-        <button id="registerBtn" class="bg-indigo-600 text-white font-semibold px-5 py-2 rounded-full shadow-md hover:bg-indigo-700">
-          Register
-        </button>
-        <button id="loginBtn" class="bg-indigo-600 text-white font-semibold px-5 py-2 rounded-full shadow-md hover:bg-indigo-700">
-          Login ⬇
-        </button>
-        <!-- Dropdown Menu -->
-        <div id="loginMenu" class="absolute right-0 hidden bg-white shadow-lg rounded-lg mt-2 w-48 text-gray-800">
-          <a href="student-login.html" class="block px-4 py-2 hover:bg-indigo-100">👨‍🎓 Student Login</a>
-          <a href="teacher-login.html" class="block px-4 py-2 hover:bg-indigo-100">👩‍🏫 Teacher Login</a>
-          <a href="admin-login.html" class="block px-4 py-2 hover:bg-indigo-100">🛠️ Admin Login</a>
-        </div>
-      </div>
-    </div>
+     <!-- 🔹 Login Button (Right Corner) -->
+<div class="relative">
+  <button id="loginBtn" class="bg-indigo-600 text-white font-semibold px-5 py-2 rounded-full shadow-md hover:bg-indigo-700">
+    Login ⬇
+  </button>
+  <!-- Dropdown Menu -->
+  <div id="loginMenu" class="absolute right-0 hidden bg-white shadow-lg rounded-lg mt-2 w-48 text-gray-800">
+    <button class="block w-full text-left px-4 py-2 hover:bg-indigo-100 roleBtn" data-role="Student">👨‍🎓 Student Login</button>
+    <button class="block w-full text-left px-4 py-2 hover:bg-indigo-100 roleBtn" data-role="Teacher">👩‍🏫 Teacher Login</button>
+    <button class="block w-full text-left px-4 py-2 hover:bg-indigo-100 roleBtn" data-role="Admin">🛠️ Admin Login</button>
+  </div>
+</div>
   </header>
 
   <!-- 🔹 Hero Section -->
@@ -105,47 +101,21 @@
     <p>🌐 www.ncac.in</p>
   </footer>
 
-  <!-- 🔹 Student Registration Modal -->
-  <div id="registerModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex justify-center items-center">
-    <div class="bg-white rounded-xl w-11/12 max-w-md p-8 relative animate-slideDown">
-      <span id="closeModal" class="absolute top-3 right-4 text-gray-500 text-2xl cursor-pointer hover:text-gray-800">&times;</span>
-      <h2 class="text-2xl font-bold text-center mb-6">Student Registration</h2>
-      <form id="studentRegisterForm" class="space-y-4">
-        <input type="text" name="fullName" placeholder="Full Name" class="w-full border border-gray-300 rounded-lg p-2" required>
-        <input type="text" name="rollNumber" placeholder="Roll Number" class="w-full border border-gray-300 rounded-lg p-2" required>
-        <input type="text" name="department" placeholder="Department / Course" class="w-full border rounded-lg p-2">
-<select id="yearOfStudy" name="yearOfStudy" required
-  class="w-full border border-gray-300 rounded-lg p-2 appearance-none bg-white text-gray-700 font-normal">
-  <option value="" disabled selected>Select Year</option>
-  <option value="1st Year">1st Year</option>
-  <option value="2nd Year">2nd Year</option>
-  <option value="3rd Year">3rd Year</option>
-  <option value="4th Year">4th Year</option>
-</select>
-        <input type="email" name="email" placeholder="Email" class="w-full border border-gray-300 rounded-lg p-2" required>
-        <input type="password" name="password" placeholder="Password" class="w-full border border-gray-300 rounded-lg p-2" required>
-        <button type="submit" class="w-full bg-indigo-600 text-white py-2 rounded-lg font-semibold hover:bg-indigo-700">
-          Register
-        </button>
-      </form>
-    </div>
-  </div>
-
+ 
   <!-- 🔹 Login Modal -->
-  <div id="loginModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex justify-center items-center">
-    <div class="bg-white rounded-xl w-11/12 max-w-md p-8 relative animate-slideDown">
-      <span id="closeLoginModal" class="absolute top-3 right-4 text-gray-500 text-2xl cursor-pointer hover:text-gray-800">&times;</span>
-      <h2 id="loginTitle" class="text-2xl font-bold text-center mb-6">Login</h2>
-      <form id="loginForm" class="space-y-4">
-        <input type="email" name="email" placeholder="Enter email" class="w-full border border-gray-300 rounded-lg p-2" required>
-        <input type="password" name="password" placeholder="Enter password" class="w-full border border-gray-300 rounded-lg p-2" required>
-        <button type="submit" class="w-full bg-indigo-600 text-white py-2 rounded-lg font-semibold hover:bg-indigo-700">
-          Login
-        </button>
-      </form>
-    </div>
+<div id="loginModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex justify-center items-center">
+  <div class="bg-white rounded-xl w-11/12 max-w-md p-8 relative animate-slideDown">
+    <span id="closeLoginModal" class="absolute top-3 right-4 text-gray-500 text-2xl cursor-pointer hover:text-gray-800">&times;</span>
+    <h2 id="loginTitle" class="text-2xl font-bold text-center mb-6">Login</h2>
+    <form id="loginForm" class="space-y-4">
+      <input type="email" name="email" placeholder="Enter email" class="w-full border border-gray-300 rounded-lg p-2" required>
+      <input type="password" name="password" placeholder="Enter password" class="w-full border border-gray-300 rounded-lg p-2" required>
+      <button type="submit" class="w-full bg-indigo-600 text-white py-2 rounded-lg font-semibold hover:bg-indigo-700">
+        Login
+      </button>
+    </form>
   </div>
-
+</div>
   <script src="script.js"></script>
 </body>
 </html>
