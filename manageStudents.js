@@ -40,7 +40,7 @@ async function fetchStudents() {
 
 // Populate form for editing
 function populateForm(student) {
-  studentForm.id.value = student.id;
+  document.getElementById("studentId").value = student.id;
   studentForm.fullName.value = student.full_name;
   studentForm.email.value = student.email;
   studentForm.rollNumber.value = student.roll_number;
@@ -55,7 +55,7 @@ function populateForm(student) {
 // Cancel edit
 cancelEditBtn.addEventListener("click", () => {
   studentForm.reset();
-  studentForm.id.value = "";
+  document.getElementById("studentId").value = "";
   formTitle.textContent = "Add New Student";
   cancelEditBtn.classList.add("hidden");
 });
@@ -75,7 +75,9 @@ studentForm.addEventListener("submit", async (e) => {
     password: formData.get("password"),
   };
 
-  const url = data.id ? "/.netlify/functions/updateStudent" : "/.netlify/functions/addStudent";
+  const url = data.id
+    ? "/.netlify/functions/updateStudent"
+    : "/.netlify/functions/addStudent";
 
   try {
     const res = await fetch(url, {
@@ -89,7 +91,7 @@ studentForm.addEventListener("submit", async (e) => {
     if (res.ok) {
       alert(result.message || "Success!");
       studentForm.reset();
-      studentForm.id.value = "";
+      document.getElementById("studentId").value = "";
       formTitle.textContent = "Add New Student";
       cancelEditBtn.classList.add("hidden");
       fetchStudents();
