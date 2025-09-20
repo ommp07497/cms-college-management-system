@@ -9,7 +9,8 @@
   },
   "dependencies": {
     "pg": "^8.11.3",
-    "bcryptjs": "^2.4.3",
+    "bcrypt": "^5.1.1",      // Add this if using native bcrypt
+    "bcryptjs": "^2.4.3",    // Optional: keep if some code uses bcryptjs
     "mongoose": "^7.2.1"
   }
 }
