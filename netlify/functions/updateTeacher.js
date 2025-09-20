@@ -1,11 +1,26 @@
+// updateTeacher.js
 const { Client } = require("pg");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 
 exports.handler = async (event) => {
-  if (event.httpMethod !== "POST") return { statusCode: 405, body: JSON.stringify({ message: "Method Not Allowed" }) };
+  if (event.httpMethod !== "POST") {
+    return { statusCode: 405, body: JSON.stringify({ message: "Method Not Allowed" }) };
+  }
 
   try {
-    const { id, fullName, email, employeeId, department, designation, password } = JSON.parse(event.body);
+    const {
+      id,              // user_id from users table
+      fullName,
+      email,
+      employeeId,
+      department,
+      designation,
+      qualification,
+      joiningDate,
+      phone,
+      address,
+      password         // optional
+    } = JSON.parse(event.body);
 
     if (!id || !fullName || !email || !employeeId || !department || !designation) {
       return { statusCode: 400, body: JSON.stringify({ message: "Required fields missing" }) };
@@ -32,17 +47,20 @@ exports.handler = async (event) => {
       );
     }
 
-    // Update teacher_details
+    // Update teacher_details table
     await client.query(
-      `UPDATE teacher_details SET employee_id=$1, department=$2, designation=$3 WHERE user_id=$4`,
-      [employeeId, department, designation, id]
+      `UPDATE teacher_details 
+       SET employee_id=$1, department=$2, designation=$3, qualification=$4, joining_date=$5, phone=$6, address=$7
+       WHERE user_id=$8`,
+      [employeeId, department, designation, qualification || null, joiningDate || null, phone || null, address || null, id]
     );
 
     await client.end();
 
     return { statusCode: 200, body: JSON.stringify({ message: "Teacher updated successfully" }) };
+
   } catch (err) {
-    console.error(err);
+    console.error("updateTeacher error:", err);
     return { statusCode: 500, body: JSON.stringify({ message: "Failed to update teacher", error: err.message }) };
   }
 };
