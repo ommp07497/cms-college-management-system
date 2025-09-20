@@ -1,3 +1,4 @@
+// manageStudents.js
 const studentForm = document.getElementById("studentForm");
 const studentTableBody = document.getElementById("studentTableBody");
 const formTitle = document.getElementById("formTitle");
@@ -6,14 +7,16 @@ const cancelEditBtn = document.getElementById("cancelEdit");
 // Fetch all students
 async function fetchStudents() {
   try {
-    const res = await fetch("/.netlify/functions/getStudents"); // backend API
+    const res = await fetch("/.netlify/functions/getStudents");
+    if (!res.ok) throw new Error("Failed to fetch students");
     const students = await res.json();
 
     studentTableBody.innerHTML = "";
     students.forEach(student => {
+      // use student.student_id (not student.id)
       const tr = document.createElement("tr");
       tr.innerHTML = `
-        <td class="border p-2">${student.id}</td>
+        <td class="border p-2">${student.student_id}</td>
         <td class="border p-2">${student.full_name}</td>
         <td class="border p-2">${student.email}</td>
         <td class="border p-2">${student.roll_number}</td>
@@ -26,27 +29,28 @@ async function fetchStudents() {
       `;
       studentTableBody.appendChild(tr);
 
-      // Edit button
+      // Edit button: pass full student object
       tr.querySelector(".editBtn").addEventListener("click", () => populateForm(student));
 
-      // Delete button
-      tr.querySelector(".deleteBtn").addEventListener("click", () => deleteStudent(student.id));
+      // Delete button: use student.student_id
+      tr.querySelector(".deleteBtn").addEventListener("click", () => deleteStudent(student.student_id));
     });
   } catch (err) {
-    console.error(err);
-    alert("Failed to fetch students.");
+    console.error("fetchStudents error:", err);
+    alert("Failed to fetch students. See console for details.");
   }
 }
 
 // Populate form for editing
 function populateForm(student) {
-  document.getElementById("studentId").value = student.id;
-  studentForm.fullName.value = student.full_name;
-  studentForm.email.value = student.email;
-  studentForm.rollNumber.value = student.roll_number;
-  studentForm.department.value = student.department;
-  studentForm.yearOfStudy.value = student.year_of_study;
-  studentForm.password.value = student.password || "";
+  console.log("populateForm student:", student);
+  document.getElementById("studentId").value = student.student_id; // student_id
+  studentForm.fullName.value = student.full_name || "";
+  studentForm.email.value = student.email || "";
+  studentForm.rollNumber.value = student.roll_number || "";
+  studentForm.department.value = student.department || "";
+  studentForm.yearOfStudy.value = student.year_of_study || "";
+  studentForm.password.value = ""; // leave blank by default
 
   formTitle.textContent = "Edit Student";
   cancelEditBtn.classList.remove("hidden");
@@ -66,20 +70,24 @@ studentForm.addEventListener("submit", async (e) => {
 
   const formData = new FormData(studentForm);
   const data = {
-    id: formData.get("id"),
+    id: formData.get("id"), // this will be student_id
     fullName: formData.get("fullName"),
     email: formData.get("email"),
     rollNumber: formData.get("rollNumber"),
     department: formData.get("department"),
     yearOfStudy: formData.get("yearOfStudy"),
-    password: formData.get("password"),
+    password: formData.get("password") // may be blank
   };
+
+  // if password is empty string, remove it so backend knows not to change it
+  if (!data.password) delete data.password;
 
   const url = data.id
     ? "/.netlify/functions/updateStudent"
     : "/.netlify/functions/addStudent";
 
   try {
+    console.log("Submitting to", url, "payload:", data);
     const res = await fetch(url, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -87,6 +95,7 @@ studentForm.addEventListener("submit", async (e) => {
     });
 
     const result = await res.json();
+    console.log("Response:", res.status, result);
 
     if (res.ok) {
       alert(result.message || "Success!");
@@ -99,23 +108,25 @@ studentForm.addEventListener("submit", async (e) => {
       alert(result.message || "Failed!");
     }
   } catch (err) {
-    console.error(err);
-    alert("Failed to save student.");
+    console.error("submit error:", err);
+    alert("Failed to save student. See console for details.");
   }
 });
 
 // Delete student
-async function deleteStudent(id) {
+async function deleteStudent(studentId) {
   if (!confirm("Are you sure you want to delete this student?")) return;
 
   try {
+    console.log("Deleting student_id:", studentId);
     const res = await fetch("/.netlify/functions/deleteStudent", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id }),
+      body: JSON.stringify({ student_id: studentId }),
     });
 
     const result = await res.json();
+    console.log("delete response:", res.status, result);
 
     if (res.ok) {
       alert(result.message || "Deleted successfully!");
@@ -124,10 +135,10 @@ async function deleteStudent(id) {
       alert(result.message || "Failed to delete.");
     }
   } catch (err) {
-    console.error(err);
-    alert("Failed to delete student.");
+    console.error("delete error:", err);
+    alert("Failed to delete student. See console for details.");
   }
 }
 
-// Initial fetch
-fetchStudents();
+// Initial fetch on DOM ready
+document.addEventListener("DOMContentLoaded", fetchStudents);
