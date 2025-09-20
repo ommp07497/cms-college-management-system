@@ -3,13 +3,12 @@ const teacherTableBody = document.getElementById("teacherTableBody");
 const formTitle = document.getElementById("formTitle");
 const cancelEditBtn = document.getElementById("cancelEdit");
 const passwordField = document.getElementById("passwordField");
-const submitBtn = document.getElementById("submitBtn");
 
 // -------------------------
 // MODE FUNCTIONS
 // -------------------------
 function setAddMode() {
-  passwordField.required = true;          
+  passwordField.required = true;
   teacherForm.reset();
   document.getElementById("teacherId").value = "";
   formTitle.textContent = "Add New Teacher";
@@ -17,11 +16,11 @@ function setAddMode() {
 }
 
 function setEditMode(teacher) {
-  passwordField.required = false;         
+  passwordField.required = false;
   formTitle.textContent = "Edit Teacher";
   cancelEditBtn.classList.remove("hidden");
 
-  document.getElementById("teacherId").value = teacher.user_id || "";
+  document.getElementById("teacherId").value = teacher.teacher_id || ""; // ✅ use teacher_id
   teacherForm.fullName.value = teacher.full_name || "";
   teacherForm.email.value = teacher.email || "";
   teacherForm.employeeId.value = teacher.employee_id || "";
@@ -31,7 +30,7 @@ function setEditMode(teacher) {
   teacherForm.joiningDate.value = teacher.joining_date || "";
   teacherForm.phone.value = teacher.phone || "";
   teacherForm.address.value = teacher.address || "";
-  passwordField.value = "";               
+  passwordField.value = "";
 }
 
 // -------------------------
@@ -61,11 +60,8 @@ async function fetchTeachers() {
       `;
       teacherTableBody.appendChild(tr);
 
-      // Edit button
       tr.querySelector(".editBtn").addEventListener("click", () => setEditMode(teacher));
-
-      // Delete button
-      tr.querySelector(".deleteBtn").addEventListener("click", () => deleteTeacher(teacher.user_id));
+      tr.querySelector(".deleteBtn").addEventListener("click", () => deleteTeacher(teacher.teacher_id)); // ✅ use teacher_id
     });
   } catch (err) {
     console.error("fetchTeachers error:", err);
@@ -81,7 +77,7 @@ teacherForm.addEventListener("submit", async (e) => {
 
   const formData = new FormData(teacherForm);
   const data = {
-    id: formData.get("teacherId"),              
+    teacher_id: formData.get("teacherId"), // ✅ send teacher_id
     fullName: formData.get("fullName"),
     email: formData.get("email"),
     employeeId: formData.get("employeeId"),
@@ -91,13 +87,12 @@ teacherForm.addEventListener("submit", async (e) => {
     joiningDate: formData.get("joiningDate"),
     phone: formData.get("phone"),
     address: formData.get("address"),
-    password: formData.get("password")      
+    password: formData.get("password")
   };
 
-  // Remove password if blank during edit
   if (!data.password) delete data.password;
 
-  const url = data.id
+  const url = data.teacher_id
     ? "/.netlify/functions/updateTeacher"
     : "/.netlify/functions/addTeacher";
 
@@ -109,7 +104,6 @@ teacherForm.addEventListener("submit", async (e) => {
     });
 
     const result = await res.json();
-
     if (res.ok) {
       alert(result.message || "Success!");
       setAddMode();
@@ -126,18 +120,17 @@ teacherForm.addEventListener("submit", async (e) => {
 // -------------------------
 // DELETE TEACHER
 // -------------------------
-async function deleteTeacher(userId) {
+async function deleteTeacher(teacherId) {
   if (!confirm("Are you sure you want to delete this teacher?")) return;
 
   try {
     const res = await fetch("/.netlify/functions/deleteTeacher", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id: userId }),
+      body: JSON.stringify({ teacher_id: teacherId }), // ✅ send teacher_id
     });
 
     const result = await res.json();
-
     if (res.ok) {
       alert(result.message || "Deleted successfully!");
       fetchTeachers();
@@ -150,14 +143,8 @@ async function deleteTeacher(userId) {
   }
 }
 
-// -------------------------
-// CANCEL BUTTON
-// -------------------------
 cancelEditBtn.addEventListener("click", setAddMode);
 
-// -------------------------
-// INITIAL LOAD
-// -------------------------
 document.addEventListener("DOMContentLoaded", () => {
   setAddMode();
   fetchTeachers();
