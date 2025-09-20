@@ -4,6 +4,7 @@ const studentTableBody = document.getElementById("studentTableBody");
 const formTitle = document.getElementById("formTitle");
 const cancelEditBtn = document.getElementById("cancelEdit");
 const passwordField = document.getElementById("passwordField");
+const submitBtn = document.getElementById("submitBtn");
 
 // -------------------------
 // MODE FUNCTIONS
@@ -13,12 +14,14 @@ function setAddMode() {
   studentForm.reset();
   document.getElementById("studentId").value = "";
   formTitle.textContent = "Add New Student";
+  submitBtn.textContent = "Add Student";
   cancelEditBtn.classList.add("hidden");
 }
 
 function setEditMode(student) {
   passwordField.required = false;         // Optional for editing
   formTitle.textContent = "Edit Student";
+  submitBtn.textContent = "Update";
   cancelEditBtn.classList.remove("hidden");
 
   document.getElementById("studentId").value = student.student_id;
@@ -103,7 +106,7 @@ studentForm.addEventListener("submit", async (e) => {
 
     if (res.ok) {
       alert(result.message || "Success!");
-      setAddMode();
+      setAddMode();      // Switch back to Add mode
       fetchStudents();
     } else {
       alert(result.message || "Failed!");
