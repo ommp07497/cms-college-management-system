@@ -1,4 +1,3 @@
-// manageTeachers.js
 const teacherForm = document.getElementById("teacherForm");
 const teacherTableBody = document.getElementById("teacherTableBody");
 const formTitle = document.getElementById("formTitle");
@@ -10,7 +9,7 @@ const submitBtn = document.getElementById("submitBtn");
 // MODE FUNCTIONS
 // -------------------------
 function setAddMode() {
-  passwordField.required = true;          // Required for adding
+  passwordField.required = true;          
   teacherForm.reset();
   document.getElementById("teacherId").value = "";
   formTitle.textContent = "Add New Teacher";
@@ -18,17 +17,21 @@ function setAddMode() {
 }
 
 function setEditMode(teacher) {
-  passwordField.required = false;         // Optional for editing
+  passwordField.required = false;         
   formTitle.textContent = "Edit Teacher";
   cancelEditBtn.classList.remove("hidden");
 
-  document.getElementById("teacherId").value = teacher.teacher_id || "";
+  document.getElementById("teacherId").value = teacher.user_id || "";
   teacherForm.fullName.value = teacher.full_name || "";
   teacherForm.email.value = teacher.email || "";
   teacherForm.employeeId.value = teacher.employee_id || "";
   teacherForm.department.value = teacher.department || "";
   teacherForm.designation.value = teacher.designation || "";
-  passwordField.value = "";               // Leave blank by default
+  teacherForm.qualification.value = teacher.qualification || "";
+  teacherForm.joiningDate.value = teacher.joining_date || "";
+  teacherForm.phone.value = teacher.phone || "";
+  teacherForm.address.value = teacher.address || "";
+  passwordField.value = "";               
 }
 
 // -------------------------
@@ -49,7 +52,8 @@ async function fetchTeachers() {
         <td class="border p-2">${teacher.email}</td>
         <td class="border p-2">${teacher.employee_id}</td>
         <td class="border p-2">${teacher.department}</td>
-        <td class="border p-2">${teacher.designation}</td>
+        <td class="border p-2">${teacher.designation || ""}</td>
+        <td class="border p-2">${teacher.phone || ""}</td>
         <td class="border p-2 flex gap-2">
           <button class="bg-yellow-400 px-2 py-1 rounded editBtn">Edit</button>
           <button class="bg-red-500 text-white px-2 py-1 rounded deleteBtn">Delete</button>
@@ -61,7 +65,7 @@ async function fetchTeachers() {
       tr.querySelector(".editBtn").addEventListener("click", () => setEditMode(teacher));
 
       // Delete button
-      tr.querySelector(".deleteBtn").addEventListener("click", () => deleteTeacher(teacher.teacher_id));
+      tr.querySelector(".deleteBtn").addEventListener("click", () => deleteTeacher(teacher.user_id));
     });
   } catch (err) {
     console.error("fetchTeachers error:", err);
@@ -77,16 +81,20 @@ teacherForm.addEventListener("submit", async (e) => {
 
   const formData = new FormData(teacherForm);
   const data = {
-    id: formData.get("id"),                // teacher_id
+    id: formData.get("teacherId"),              
     fullName: formData.get("fullName"),
     email: formData.get("email"),
     employeeId: formData.get("employeeId"),
     department: formData.get("department"),
     designation: formData.get("designation"),
-    password: formData.get("password")     // may be blank
+    qualification: formData.get("qualification"),
+    joiningDate: formData.get("joiningDate"),
+    phone: formData.get("phone"),
+    address: formData.get("address"),
+    password: formData.get("password")      
   };
 
-  // If password is empty, remove it so backend doesn't update
+  // Remove password if blank during edit
   if (!data.password) delete data.password;
 
   const url = data.id
@@ -118,14 +126,14 @@ teacherForm.addEventListener("submit", async (e) => {
 // -------------------------
 // DELETE TEACHER
 // -------------------------
-async function deleteTeacher(teacherId) {
+async function deleteTeacher(userId) {
   if (!confirm("Are you sure you want to delete this teacher?")) return;
 
   try {
     const res = await fetch("/.netlify/functions/deleteTeacher", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ teacher_id: teacherId }),
+      body: JSON.stringify({ id: userId }),
     });
 
     const result = await res.json();
