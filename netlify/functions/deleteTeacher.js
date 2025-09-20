@@ -1,17 +1,12 @@
-// deleteTeacher.js
 const { Client } = require("pg");
 
 exports.handler = async (event) => {
   if (event.httpMethod !== "POST") {
-    return {
-      statusCode: 405,
-      body: JSON.stringify({ message: "Method Not Allowed" }),
-    };
+    return { statusCode: 405, body: JSON.stringify({ message: "Method Not Allowed" }) };
   }
 
   try {
     const { teacher_id } = JSON.parse(event.body);
-
     if (!teacher_id) {
       return { statusCode: 400, body: JSON.stringify({ message: "Teacher ID required" }) };
     }
@@ -20,24 +15,21 @@ exports.handler = async (event) => {
       connectionString: process.env.DATABASE_URL,
       ssl: { rejectUnauthorized: false },
     });
-
     await client.connect();
 
-    // Get the user_id associated with this teacher
+    // Get user_id
     const res = await client.query(
-      "SELECT user_id FROM teacher_details WHERE teacher_id = $1",
+      `SELECT user_id FROM teacher_details WHERE teacher_id=$1`,
       [teacher_id]
     );
-
     if (res.rows.length === 0) {
       await client.end();
       return { statusCode: 404, body: JSON.stringify({ message: "Teacher not found" }) };
     }
-
     const userId = res.rows[0].user_id;
 
-    // Delete from users table (cascade deletes teacher_details)
-    await client.query("DELETE FROM users WHERE id = $1", [userId]);
+    // Delete user (cascade deletes teacher_details)
+    await client.query(`DELETE FROM users WHERE id=$1`, [userId]);
 
     await client.end();
 
