@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "pg": "^8.11.3",
-    "bcryptjs": "^2.4.3"
+    "bcryptjs": "^2.4.3",
+    "mongoose": "^7.2.1"
   }
 }
