@@ -1,32 +1,28 @@
-const { Client } = require("pg");
+async function deleteTeacher(teacherId) {
+  if (!confirm("Are you sure you want to delete this teacher?")) return;
 
-exports.handler = async (event) => {
-  if (event.httpMethod !== "POST") return { statusCode: 405, body: JSON.stringify({ message: "Method Not Allowed" }) };
+  if (!teacherId) {
+    alert("Teacher ID is missing");
+    return;
+  }
 
   try {
-    const { teacher_id } = JSON.parse(event.body);
-    if (!teacher_id) return { statusCode: 400, body: JSON.stringify({ message: "Teacher ID required" }) };
-
-    const client = new Client({
-      connectionString: process.env.DATABASE_URL,
-      ssl: { rejectUnauthorized: false },
+    const res = await fetch("/.netlify/functions/deleteTeacher", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ teacher_id: teacherId }), // ✅ key matches backend
     });
 
-    await client.connect();
+    const result = await res.json();
 
-    // Get user_id first
-    const res = await client.query(`SELECT user_id FROM teacher_details WHERE teacher_id=$1`, [teacher_id]);
-    if (res.rows.length === 0) return { statusCode: 404, body: JSON.stringify({ message: "Teacher not found" }) };
-    const userId = res.rows[0].user_id;
-
-    // Delete user (will cascade delete teacher_details)
-    await client.query(`DELETE FROM users WHERE id=$1`, [userId]);
-
-    await client.end();
-
-    return { statusCode: 200, body: JSON.stringify({ message: "Teacher deleted successfully" }) };
+    if (res.ok) {
+      alert(result.message || "Deleted successfully!");
+      fetchTeachers();
+    } else {
+      alert(result.message || "Failed to delete.");
+    }
   } catch (err) {
-    console.error(err);
-    return { statusCode: 500, body: JSON.stringify({ message: "Failed to delete teacher", error: err.message }) };
+    console.error("delete error:", err);
+    alert("Failed to delete teacher. See console for details.");
   }
-};
+}
