@@ -15,20 +15,19 @@
   </header>
 
   <!-- Main Content -->
-  <main class="max-w-7xl mx-auto p-6 grid gap-6 md:grid-cols-2 sm:grid-cols-1">
-
+  <main class="max-w-7xl mx-auto p-6 grid gap-6">
     <!-- Add/Edit Student Form -->
-    <div class="bg-white p-6 rounded-xl shadow-md mb-6">
+    <div class="bg-white p-6 rounded-xl shadow-md w-full">
       <h2 class="text-xl font-semibold mb-4" id="formTitle">Add New Student</h2>
       <form id="studentForm" class="grid gap-4">
-    <input type="hidden" name="id" id="studentId">
+        <input type="hidden" name="id" id="studentId">
         <input type="text" name="fullName" placeholder="Full Name" class="w-full p-2 border rounded" required>
         <input type="email" name="email" placeholder="Email" class="w-full p-2 border rounded" required>
         <input type="text" name="rollNumber" placeholder="Roll Number" class="w-full p-2 border rounded" required>
         <input type="text" name="department" placeholder="Department" class="w-full p-2 border rounded" required>
         <input type="text" name="yearOfStudy" placeholder="Year of Study" class="w-full p-2 border rounded" required>
         <input type="password" name="password" placeholder="Password" class="w-full p-2 border rounded" required>
-        <div class="flex gap-2">
+        <div class="flex flex-col sm:flex-row gap-2">
           <button type="submit" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 flex-1">
             Add Student
           </button>
@@ -40,7 +39,7 @@
     </div>
 
     <!-- Students Table -->
-    <div class="bg-white p-6 rounded-xl shadow-md overflow-x-auto">
+    <div class="bg-white p-6 rounded-xl shadow-md overflow-x-auto w-full">
       <h2 class="text-xl font-semibold mb-4">Student List</h2>
       <table class="w-full border-collapse border min-w-[600px]">
         <thead>
@@ -59,7 +58,6 @@
         </tbody>
       </table>
     </div>
-
   </main>
 
   <!-- Footer -->
