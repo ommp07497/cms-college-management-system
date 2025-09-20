@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manage Teachers</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 text-gray-900">
+
+  <!-- Navbar -->
+  <header class="bg-gray-800 text-white p-4 flex justify-between items-center">
+    <h1 class="text-2xl font-bold">👩‍🏫 Manage Teachers</h1>
+    <button id="logoutBtn" class="bg-red-500 px-4 py-2 rounded-lg hover:bg-red-600">Logout</button>
+  </header>
+
+  <!-- Main Content -->
+  <main class="max-w-7xl mx-auto p-6 grid gap-6">
+    <!-- Add/Edit Teacher Form -->
+    <div class="bg-white p-6 rounded-xl shadow-md w-full">
+      <h2 class="text-xl font-semibold mb-4" id="formTitle">Add New Teacher</h2>
+      <form id="teacherForm" class="grid gap-4">
+        <input type="hidden" name="teacher_id" id="teacherId">
+
+        <input type="text" name="full_name" placeholder="Full Name" class="w-full p-2 border rounded" required>
+        <input type="email" name="email" placeholder="Email" class="w-full p-2 border rounded" required>
+        <input type="password" id="passwordField" name="password" placeholder="Password" class="w-full p-2 border rounded" required>
+
+        <input type="text" name="employee_id" placeholder="Employee ID" class="w-full p-2 border rounded" required>
+        <input type="text" name="department" placeholder="Department" class="w-full p-2 border rounded" required>
+        <input type="text" name="designation" placeholder="Designation" class="w-full p-2 border rounded">
+        <input type="text" name="qualification" placeholder="Qualification" class="w-full p-2 border rounded">
+        <input type="date" name="joining_date" class="w-full p-2 border rounded">
+        <input type="text" name="phone" placeholder="Phone" class="w-full p-2 border rounded">
+        <textarea name="address" placeholder="Address" class="w-full p-2 border rounded"></textarea>
+
+        <div class="flex flex-col sm:flex-row gap-2">
+          <button type="submit" id="submitBtn" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 flex-1">
+            Add Teacher
+          </button>
+          <button type="button" id="cancelEdit" class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 flex-1 hidden">
+            Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Teachers Table -->
+    <div class="bg-white p-6 rounded-xl shadow-md overflow-x-auto w-full">
+      <h2 class="text-xl font-semibold mb-4">Teacher List</h2>
+      <table class="w-full border-collapse border min-w-[800px]">
+        <thead>
+          <tr class="bg-gray-200">
+            <th class="border p-2">ID</th>
+            <th class="border p-2">Name</th>
+            <th class="border p-2">Email</th>
+            <th class="border p-2">Employee ID</th>
+            <th class="border p-2">Department</th>
+            <th class="border p-2">Designation</th>
+            <th class="border p-2">Phone</th>
+            <th class="border p-2">Actions</th>
+          </tr>
+        </thead>
+        <tbody id="teacherTableBody">
+          <!-- Rows populated via JS -->
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-gray-900 text-gray-300 text-center p-4 mt-6">
+    &copy; 2025 N.C. College
+  </footer>
+
+<script src="manageTeachers.js"></script>
+<script>
+  document.getElementById("logoutBtn").addEventListener("click", () => {
+    if(confirm("Are you sure you want to logout?")) window.location.href = "index.html";
+  });
+</script>
+</body>
+</html>
