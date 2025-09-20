@@ -80,7 +80,7 @@ loginForm.addEventListener("submit", async (e) => {
 
       // Redirect based on role
       if (result.role === "student") {
-        window.location.href = "/Student_dashboard.html";
+        window.location.href = "/studentDashboard.html";
       } else if (result.role === "teacher") {
         window.location.href = "/teacherDashboard.html";
       } else if (result.role === "admin") {
