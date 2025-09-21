@@ -16,7 +16,7 @@ exports.handler = async (event) => {
 
     // Get user_id for this teacher_id
     const userRes = await client.query(
-      `SELECT user_id FROM teacher_details WHERE user_id=$1`,
+      `SELECT user_id FROM teacher_details WHERE teacher_id=$1`,
       [teacher_id]
     );
 
@@ -27,13 +27,13 @@ exports.handler = async (event) => {
 
     const userId = userRes.rows[0].user_id;
 
-    // Delete from teacher_details first (foreign key constraint)
+    // Delete teacher_details first (foreign key constraint)
     const delDetails = await client.query(
-      `DELETE FROM teacher_details WHERE user_id=$1`,
-      [userId]
+      `DELETE FROM teacher_details WHERE teacher_id=$1`,
+      [teacher_id]
     );
 
-    // Delete from users table
+    // Delete user
     const delUser = await client.query(
       `DELETE FROM users WHERE id=$1`,
       [userId]
@@ -41,15 +41,10 @@ exports.handler = async (event) => {
 
     await client.end();
 
-    if (delDetails.rowCount === 0) {
-      return { statusCode: 500, body: JSON.stringify({ message: "Failed to delete teacher details" }) };
-    }
-
-    return { 
-      statusCode: 200, 
-      body: JSON.stringify({ message: "Teacher deleted successfully" }) 
+    return {
+      statusCode: 200,
+      body: JSON.stringify({ message: "Teacher deleted successfully" }),
     };
-
   } catch (err) {
     console.error("deleteTeacher error:", err);
     return { statusCode: 500, body: JSON.stringify({ message: "Failed to delete teacher", error: err.message }) };
