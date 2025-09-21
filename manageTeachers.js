@@ -23,7 +23,7 @@ function setEditMode(teacher) {
   submitBtn.textContent = "Update";
   cancelEditBtn.classList.remove("hidden");
 
-  document.getElementById("teacherId").value = teacher.teacher_id || "";
+  document.getElementById("teacherId").value = teacher.teacher_id;
   teacherForm.fullName.value = teacher.full_name || "";
   teacherForm.email.value = teacher.email || "";
   teacherForm.employeeId.value = teacher.employee_id || "";
