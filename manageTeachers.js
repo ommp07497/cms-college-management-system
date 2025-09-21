@@ -5,9 +5,7 @@ const cancelEditBtn = document.getElementById("cancelEdit");
 const passwordField = document.getElementById("passwordField");
 const submitBtn = document.getElementById("submitBtn");
 
-// -------------------------
 // MODE FUNCTIONS
-// -------------------------
 function setAddMode() {
   passwordField.required = true;
   teacherForm.reset();
@@ -23,7 +21,7 @@ function setEditMode(teacher) {
   submitBtn.textContent = "Update Teacher";
   cancelEditBtn.classList.remove("hidden");
 
-  document.getElementById("teacherId").value = teacher.id || "";
+  document.getElementById("teacherId").value = teacher.teacher_id || "";
   teacherForm.fullName.value = teacher.full_name || "";
   teacherForm.email.value = teacher.email || "";
   teacherForm.employeeId.value = teacher.employee_id || "";
@@ -36,9 +34,7 @@ function setEditMode(teacher) {
   passwordField.value = "";
 }
 
-// -------------------------
 // FETCH TEACHERS
-// -------------------------
 async function fetchTeachers() {
   try {
     const res = await fetch("/.netlify/functions/getTeachers");
@@ -49,7 +45,7 @@ async function fetchTeachers() {
     teachers.forEach(teacher => {
       const tr = document.createElement("tr");
       tr.innerHTML = `
-        <td class="border p-2">${teacher.id}</td>
+        <td class="border p-2">${teacher.teacher_id}</td>
         <td class="border p-2">${teacher.full_name}</td>
         <td class="border p-2">${teacher.email}</td>
         <td class="border p-2">${teacher.employee_id}</td>
@@ -64,23 +60,21 @@ async function fetchTeachers() {
       teacherTableBody.appendChild(tr);
 
       tr.querySelector(".editBtn").addEventListener("click", () => setEditMode(teacher));
-      tr.querySelector(".deleteBtn").addEventListener("click", () => deleteTeacher(teacher.id));
+      tr.querySelector(".deleteBtn").addEventListener("click", () => deleteTeacher(teacher.teacher_id));
     });
   } catch (err) {
     console.error("fetchTeachers error:", err);
-    alert("Failed to fetch teachers. See console for details.");
+    alert("Failed to fetch teachers.");
   }
 }
 
-// -------------------------
-// FORM SUBMIT (ADD/UPDATE)
-// -------------------------
+// FORM SUBMIT
 teacherForm.addEventListener("submit", async (e) => {
   e.preventDefault();
 
   const formData = new FormData(teacherForm);
   const data = {
-    id: formData.get("id"),
+    teacher_id: formData.get("teacherId"),
     fullName: formData.get("fullName"),
     email: formData.get("email"),
     employeeId: formData.get("employeeId"),
@@ -95,7 +89,7 @@ teacherForm.addEventListener("submit", async (e) => {
 
   if (!data.password) delete data.password;
 
-  const url = data.id
+  const url = data.teacher_id
     ? "/.netlify/functions/updateTeacher"
     : "/.netlify/functions/addTeacher";
 
@@ -106,49 +100,6 @@ teacherForm.addEventListener("submit", async (e) => {
       body: JSON.stringify(data),
     });
     const result = await res.json();
-
     if (res.ok) {
       alert(result.message || "Success!");
-      setAddMode();
-      fetchTeachers();
-    } else {
-      alert(result.message || "Failed!");
-    }
-  } catch (err) {
-    console.error("submit error:", err);
-    alert("Failed to save teacher. See console for details.");
-  }
-});
-
-// -------------------------
-// DELETE TEACHER
-// -------------------------
-async function deleteTeacher(id) {
-  if (!confirm("Are you sure you want to delete this teacher?")) return;
-
-  try {
-    const res = await fetch("/.netlify/functions/deleteTeacher", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id }),
-    });
-    const result = await res.json();
-
-    if (res.ok) {
-      alert(result.message || "Deleted successfully!");
-      fetchTeachers();
-    } else {
-      alert(result.message || "Failed to delete.");
-    }
-  } catch (err) {
-    console.error("delete error:", err);
-    alert("Failed to delete teacher. See console for details.");
-  }
-}
-
-cancelEditBtn.addEventListener("click", setAddMode);
-
-document.addEventListener("DOMContentLoaded", () => {
-  setAddMode();
-  fetchTeachers();
-});
+      setAddMode
