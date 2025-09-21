@@ -80,7 +80,7 @@ teacherForm.addEventListener("submit", async (e) => {
 
   const formData = new FormData(teacherForm);
   const data = {
-    id: formData.get("teacherId") || null,  // must be "id" for update function
+    id: formData.get("id") || null,  // must be "id" for update function
     fullName: formData.get("fullName"),
     email: formData.get("email"),
     employeeId: formData.get("employeeId"),
