@@ -1,3 +1,4 @@
+// manageTeachers.js
 const teacherForm = document.getElementById("teacherForm");
 const teacherTableBody = document.getElementById("teacherTableBody");
 const formTitle = document.getElementById("formTitle");
@@ -5,7 +6,9 @@ const cancelEditBtn = document.getElementById("cancelEdit");
 const passwordField = document.getElementById("passwordField");
 const submitBtn = document.getElementById("submitBtn");
 
+// -------------------------
 // MODE FUNCTIONS
+// -------------------------
 function setAddMode() {
   passwordField.required = true;
   teacherForm.reset();
@@ -34,7 +37,9 @@ function setEditMode(teacher) {
   passwordField.value = "";
 }
 
+// -------------------------
 // FETCH TEACHERS
+// -------------------------
 async function fetchTeachers() {
   try {
     const res = await fetch("/.netlify/functions/getTeachers");
@@ -64,17 +69,19 @@ async function fetchTeachers() {
     });
   } catch (err) {
     console.error("fetchTeachers error:", err);
-    alert("Failed to fetch teachers.");
+    alert("Failed to fetch teachers. See console for details.");
   }
 }
 
-// FORM SUBMIT
+// -------------------------
+// ADD / UPDATE TEACHER
+// -------------------------
 teacherForm.addEventListener("submit", async (e) => {
   e.preventDefault();
 
   const formData = new FormData(teacherForm);
   const data = {
-    teacher_id: formData.get("teacherId"),
+    id: formData.get("teacher_id"), // used in update
     fullName: formData.get("fullName"),
     email: formData.get("email"),
     employeeId: formData.get("employeeId"),
@@ -87,9 +94,11 @@ teacherForm.addEventListener("submit", async (e) => {
     password: formData.get("password")
   };
 
+  // If password is empty, remove it (optional for update)
   if (!data.password) delete data.password;
 
-  const url = data.teacher_id
+  // Determine whether to add or update
+  const url = data.id
     ? "/.netlify/functions/updateTeacher"
     : "/.netlify/functions/addTeacher";
 
@@ -99,7 +108,53 @@ teacherForm.addEventListener("submit", async (e) => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
     });
+
     const result = await res.json();
     if (res.ok) {
       alert(result.message || "Success!");
-      setAddMode
+      setAddMode();
+      fetchTeachers();
+    } else {
+      alert(result.message || "Failed!");
+    }
+  } catch (err) {
+    console.error("submit error:", err);
+    alert("Failed to save teacher. See console for details.");
+  }
+});
+
+// -------------------------
+// DELETE TEACHER
+// -------------------------
+async function deleteTeacher(teacherId) {
+  if (!confirm("Are you sure you want to delete this teacher?")) return;
+
+  try {
+    const res = await fetch("/.netlify/functions/deleteTeacher", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ teacher_id: teacherId }),
+    });
+
+    const result = await res.json();
+    if (res.ok) {
+      alert(result.message || "Deleted successfully!");
+      fetchTeachers();
+    } else {
+      alert(result.message || "Failed to delete.");
+    }
+  } catch (err) {
+    console.error("delete error:", err);
+    alert("Failed to delete teacher. See console for details.");
+  }
+}
+
+cancelEditBtn.addEventListener("click", setAddMode);
+
+// -------------------------
+// INIT
+// -------------------------
+document.addEventListener("DOMContentLoaded", () => {
+  setAddMode();
+  fetchTeachers();
+});
