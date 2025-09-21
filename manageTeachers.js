@@ -130,7 +130,7 @@ async function deleteTeacher(teacherId) {
     const res = await fetch("/.netlify/functions/deleteTeacher", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id: teacherId })
+      body: JSON.stringify({ teacher_id: teacherId })
     });
     const result = await res.json();
 
