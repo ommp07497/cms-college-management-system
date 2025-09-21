@@ -3,6 +3,7 @@ const teacherTableBody = document.getElementById("teacherTableBody");
 const formTitle = document.getElementById("formTitle");
 const cancelEditBtn = document.getElementById("cancelEdit");
 const passwordField = document.getElementById("passwordField");
+const submitBtn = document.getElementById("submitBtn");
 
 // -------------------------
 // MODE FUNCTIONS
@@ -12,16 +13,17 @@ function setAddMode() {
   teacherForm.reset();
   document.getElementById("teacherId").value = "";
   formTitle.textContent = "Add New Teacher";
+  submitBtn.textContent = "Add Teacher";
   cancelEditBtn.classList.add("hidden");
 }
 
 function setEditMode(teacher) {
   passwordField.required = false;
   formTitle.textContent = "Edit Teacher";
+  submitBtn.textContent = "Update Teacher";
   cancelEditBtn.classList.remove("hidden");
 
-  // Fill form fields
-  document.getElementById("teacherId").value = teacher.id || teacher.teacher_id || "";
+  document.getElementById("teacherId").value = teacher.id || "";
   teacherForm.fullName.value = teacher.full_name || "";
   teacherForm.email.value = teacher.email || "";
   teacherForm.employeeId.value = teacher.employee_id || "";
@@ -47,7 +49,7 @@ async function fetchTeachers() {
     teachers.forEach(teacher => {
       const tr = document.createElement("tr");
       tr.innerHTML = `
-        <td class="border p-2">${teacher.teacher_id}</td>
+        <td class="border p-2">${teacher.id}</td>
         <td class="border p-2">${teacher.full_name}</td>
         <td class="border p-2">${teacher.email}</td>
         <td class="border p-2">${teacher.employee_id}</td>
@@ -61,11 +63,8 @@ async function fetchTeachers() {
       `;
       teacherTableBody.appendChild(tr);
 
-      // Edit button
       tr.querySelector(".editBtn").addEventListener("click", () => setEditMode(teacher));
-
-      // Delete button
-      tr.querySelector(".deleteBtn").addEventListener("click", () => deleteTeacher(teacher.teacher_id));
+      tr.querySelector(".deleteBtn").addEventListener("click", () => deleteTeacher(teacher.id));
     });
   } catch (err) {
     console.error("fetchTeachers error:", err);
@@ -81,7 +80,7 @@ teacherForm.addEventListener("submit", async (e) => {
 
   const formData = new FormData(teacherForm);
   const data = {
-    id: formData.get("id"), // ✅ must match hidden input name
+    id: formData.get("id"),
     fullName: formData.get("fullName"),
     email: formData.get("email"),
     employeeId: formData.get("employeeId"),
@@ -106,8 +105,8 @@ teacherForm.addEventListener("submit", async (e) => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
     });
-
     const result = await res.json();
+
     if (res.ok) {
       alert(result.message || "Success!");
       setAddMode();
@@ -124,17 +123,17 @@ teacherForm.addEventListener("submit", async (e) => {
 // -------------------------
 // DELETE TEACHER
 // -------------------------
-async function deleteTeacher(teacherId) {
+async function deleteTeacher(id) {
   if (!confirm("Are you sure you want to delete this teacher?")) return;
 
   try {
     const res = await fetch("/.netlify/functions/deleteTeacher", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ teacher_id: teacherId }),
+      body: JSON.stringify({ id }),
     });
-
     const result = await res.json();
+
     if (res.ok) {
       alert(result.message || "Deleted successfully!");
       fetchTeachers();
@@ -147,14 +146,8 @@ async function deleteTeacher(teacherId) {
   }
 }
 
-// -------------------------
-// CANCEL BUTTON
-// -------------------------
 cancelEditBtn.addEventListener("click", setAddMode);
 
-// -------------------------
-// INITIAL LOAD
-// -------------------------
 document.addEventListener("DOMContentLoaded", () => {
   setAddMode();
   fetchTeachers();
