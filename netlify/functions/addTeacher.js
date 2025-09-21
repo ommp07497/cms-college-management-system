@@ -1,24 +1,12 @@
-// addTeacher.js
 const { Client } = require("pg");
 const bcrypt = require("bcryptjs");
 
 exports.handler = async (event) => {
-  if (event.httpMethod !== "POST") {
-    return { statusCode: 405, body: JSON.stringify({ message: "Method Not Allowed" }) };
-  }
-
   try {
     const {
-      fullName,
-      email,
-      employeeId,
-      department,
-      designation,
-      qualification,
-      joiningDate,
-      phone,
-      address,
-      password
+      fullName, email, password,
+      employeeId, department, designation,
+      qualification, joiningDate, phone, address
     } = JSON.parse(event.body);
 
     if (!fullName || !email || !employeeId || !department || !designation || !password) {
@@ -27,15 +15,15 @@ exports.handler = async (event) => {
 
     const client = new Client({
       connectionString: process.env.DATABASE_URL,
-      ssl: { rejectUnauthorized: false },
+      ssl: { rejectUnauthorized: false }
     });
     await client.connect();
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Insert into users table
+    // Insert into users with role 'teacher'
     const userRes = await client.query(
-      `INSERT INTO users (full_name, email, password) VALUES ($1, $2, $3) RETURNING id`,
+      `INSERT INTO users (full_name, email, password, role) VALUES ($1, $2, $3, 'teacher') RETURNING id`,
       [fullName, email, hashedPassword]
     );
 
@@ -43,7 +31,7 @@ exports.handler = async (event) => {
 
     // Insert into teacher_details
     await client.query(
-      `INSERT INTO teacher_details 
+      `INSERT INTO teacher_details
        (user_id, employee_id, department, designation, qualification, joining_date, phone, address)
        VALUES ($1,$2,$3,$4,$5,$6,$7,$8)`,
       [userId, employeeId, department, designation, qualification || null, joiningDate || null, phone || null, address || null]
@@ -51,7 +39,7 @@ exports.handler = async (event) => {
 
     await client.end();
 
-    return { statusCode: 200, body: JSON.stringify({ message: "Teacher added successfully" }) };
+    return { statusCode: 200, body: JSON.stringify({ message: "Teacher added successfully!" }) };
   } catch (err) {
     console.error("addTeacher error:", err);
     return { statusCode: 500, body: JSON.stringify({ message: "Failed to add teacher", error: err.message }) };
