@@ -20,7 +20,8 @@ function setEditMode(teacher) {
   formTitle.textContent = "Edit Teacher";
   cancelEditBtn.classList.remove("hidden");
 
-  document.getElementById("teacherId").value = teacher.teacher_id || ""; // ✅ use teacher_id
+  // Fill form fields
+  document.getElementById("teacherId").value = teacher.id || teacher.teacher_id || "";
   teacherForm.fullName.value = teacher.full_name || "";
   teacherForm.email.value = teacher.email || "";
   teacherForm.employeeId.value = teacher.employee_id || "";
@@ -60,8 +61,11 @@ async function fetchTeachers() {
       `;
       teacherTableBody.appendChild(tr);
 
+      // Edit button
       tr.querySelector(".editBtn").addEventListener("click", () => setEditMode(teacher));
-      tr.querySelector(".deleteBtn").addEventListener("click", () => deleteTeacher(teacher.teacher_id)); // ✅ use teacher_id
+
+      // Delete button
+      tr.querySelector(".deleteBtn").addEventListener("click", () => deleteTeacher(teacher.teacher_id));
     });
   } catch (err) {
     console.error("fetchTeachers error:", err);
@@ -77,7 +81,7 @@ teacherForm.addEventListener("submit", async (e) => {
 
   const formData = new FormData(teacherForm);
   const data = {
-    teacher_id: formData.get("teacherId"), // ✅ send teacher_id
+    id: formData.get("id"), // ✅ must match hidden input name
     fullName: formData.get("fullName"),
     email: formData.get("email"),
     employeeId: formData.get("employeeId"),
@@ -92,7 +96,7 @@ teacherForm.addEventListener("submit", async (e) => {
 
   if (!data.password) delete data.password;
 
-  const url = data.teacher_id
+  const url = data.id
     ? "/.netlify/functions/updateTeacher"
     : "/.netlify/functions/addTeacher";
 
@@ -127,7 +131,7 @@ async function deleteTeacher(teacherId) {
     const res = await fetch("/.netlify/functions/deleteTeacher", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ teacher_id: teacherId }), // ✅ send teacher_id
+      body: JSON.stringify({ teacher_id: teacherId }),
     });
 
     const result = await res.json();
@@ -143,8 +147,14 @@ async function deleteTeacher(teacherId) {
   }
 }
 
+// -------------------------
+// CANCEL BUTTON
+// -------------------------
 cancelEditBtn.addEventListener("click", setAddMode);
 
+// -------------------------
+// INITIAL LOAD
+// -------------------------
 document.addEventListener("DOMContentLoaded", () => {
   setAddMode();
   fetchTeachers();
