@@ -50,7 +50,7 @@ exports.handler = async (event) => {
     await client.query(
       `UPDATE teacher_details 
        SET employee_id=$1, department=$2, designation=$3, qualification=$4, joining_date=$5, phone=$6, address=$7
-       WHERE user_id=$8`,
+       WHERE teacher_id=$8`,
       [employeeId, department, designation, qualification || null, joiningDate || null, phone || null, address || null, id]
     );
 
