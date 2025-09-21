@@ -1,4 +1,3 @@
-// manageTeachers.js
 const teacherForm = document.getElementById("teacherForm");
 const teacherTableBody = document.getElementById("teacherTableBody");
 const formTitle = document.getElementById("formTitle");
@@ -10,7 +9,7 @@ const submitBtn = document.getElementById("submitBtn");
 // MODE FUNCTIONS
 // -------------------------
 function setAddMode() {
-  passwordField.required = true;
+  passwordField.required = true;  // Required for adding
   teacherForm.reset();
   document.getElementById("teacherId").value = "";
   formTitle.textContent = "Add New Teacher";
@@ -19,9 +18,9 @@ function setAddMode() {
 }
 
 function setEditMode(teacher) {
-  passwordField.required = false;
+  passwordField.required = false; // Optional for editing
   formTitle.textContent = "Edit Teacher";
-  submitBtn.textContent = "Update Teacher";
+  submitBtn.textContent = "Update";
   cancelEditBtn.classList.remove("hidden");
 
   document.getElementById("teacherId").value = teacher.teacher_id || "";
@@ -34,7 +33,7 @@ function setEditMode(teacher) {
   teacherForm.joiningDate.value = teacher.joining_date || "";
   teacherForm.phone.value = teacher.phone || "";
   teacherForm.address.value = teacher.address || "";
-  passwordField.value = "";
+  passwordField.value = ""; // blank by default
 }
 
 // -------------------------
@@ -69,19 +68,19 @@ async function fetchTeachers() {
     });
   } catch (err) {
     console.error("fetchTeachers error:", err);
-    alert("Failed to fetch teachers. See console for details.");
+    alert("Failed to fetch teachers.");
   }
 }
 
 // -------------------------
-// ADD / UPDATE TEACHER
+// FORM SUBMIT (ADD/UPDATE)
 // -------------------------
 teacherForm.addEventListener("submit", async (e) => {
   e.preventDefault();
 
   const formData = new FormData(teacherForm);
   const data = {
-    id: formData.get("teacher_id"), // used in update
+    id: formData.get("teacherId") || null,  // must be "id" for update function
     fullName: formData.get("fullName"),
     email: formData.get("email"),
     employeeId: formData.get("employeeId"),
@@ -94,10 +93,8 @@ teacherForm.addEventListener("submit", async (e) => {
     password: formData.get("password")
   };
 
-  // If password is empty, remove it (optional for update)
   if (!data.password) delete data.password;
 
-  // Determine whether to add or update
   const url = data.id
     ? "/.netlify/functions/updateTeacher"
     : "/.netlify/functions/addTeacher";
@@ -106,13 +103,13 @@ teacherForm.addEventListener("submit", async (e) => {
     const res = await fetch(url, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
+      body: JSON.stringify(data)
     });
-
     const result = await res.json();
+
     if (res.ok) {
       alert(result.message || "Success!");
-      setAddMode();
+      setAddMode();  // back to Add mode
       fetchTeachers();
     } else {
       alert(result.message || "Failed!");
@@ -133,10 +130,10 @@ async function deleteTeacher(teacherId) {
     const res = await fetch("/.netlify/functions/deleteTeacher", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ teacher_id: teacherId }),
+      body: JSON.stringify({ id: teacherId })
     });
-
     const result = await res.json();
+
     if (res.ok) {
       alert(result.message || "Deleted successfully!");
       fetchTeachers();
@@ -149,10 +146,13 @@ async function deleteTeacher(teacherId) {
   }
 }
 
+// -------------------------
+// CANCEL BUTTON
+// -------------------------
 cancelEditBtn.addEventListener("click", setAddMode);
 
 // -------------------------
-// INIT
+// INITIAL LOAD
 // -------------------------
 document.addEventListener("DOMContentLoaded", () => {
   setAddMode();
