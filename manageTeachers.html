@@ -14,24 +14,24 @@
     <button id="logoutBtn" class="bg-red-500 px-4 py-2 rounded-lg hover:bg-red-600">Logout</button>
   </header>
 
+  <!-- Main Content -->
   <main class="max-w-7xl mx-auto p-6 grid gap-6">
     <!-- Add/Edit Teacher Form -->
     <div class="bg-white p-6 rounded-xl shadow-md w-full">
       <h2 class="text-xl font-semibold mb-4" id="formTitle">Add New Teacher</h2>
       <form id="teacherForm" class="grid gap-4">
-        <input type="hidden" name="id" id="teacherId">
+        <input type="hidden" name="teacher_id" id="teacherId">
 
         <input type="text" name="fullName" placeholder="Full Name" class="w-full p-2 border rounded" required>
         <input type="email" name="email" placeholder="Email" class="w-full p-2 border rounded" required>
         <input type="password" id="passwordField" name="password" placeholder="Password" class="w-full p-2 border rounded" required>
-
         <input type="text" name="employeeId" placeholder="Employee ID" class="w-full p-2 border rounded" required>
         <input type="text" name="department" placeholder="Department" class="w-full p-2 border rounded" required>
         <input type="text" name="designation" placeholder="Designation" class="w-full p-2 border rounded" required>
         <input type="text" name="qualification" placeholder="Qualification" class="w-full p-2 border rounded" required>
-
-        <!-- Date input with placeholder trick -->
-        <input type="text" name="joiningDate" placeholder="Tap to enter joining date"
+        
+        <!-- Date input with placeholder -->
+        <input type="text" name="joiningDate" placeholder="Tap to enter Joining Date" 
                class="w-full p-2 border rounded" required
                onfocus="(this.type='date')" 
                onblur="if(!this.value)this.type='text'">
@@ -66,9 +66,7 @@
             <th class="border p-2">Actions</th>
           </tr>
         </thead>
-        <tbody id="teacherTableBody">
-          <!-- Rows populated via JS -->
-        </tbody>
+        <tbody id="teacherTableBody"></tbody>
       </table>
     </div>
   </main>
@@ -77,11 +75,11 @@
     &copy; 2025 N.C. College
   </footer>
 
-<script src="manageTeachers.js"></script>
-<script>
-  document.getElementById("logoutBtn").addEventListener("click", () => {
-    if(confirm("Are you sure you want to logout?")) window.location.href = "index.html";
-  });
-</script>
+  <script src="manageTeachers.js"></script>
+  <script>
+    document.getElementById("logoutBtn").addEventListener("click", () => {
+      if(confirm("Are you sure you want to logout?")) window.location.href = "index.html";
+    });
+  </script>
 </body>
 </html>
