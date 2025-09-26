@@ -1,4 +1,3 @@
-// manageStudents.js
 const studentForm = document.getElementById("studentForm");
 const studentTableBody = document.getElementById("studentTableBody");
 const formTitle = document.getElementById("formTitle");
@@ -6,11 +5,47 @@ const cancelEditBtn = document.getElementById("cancelEdit");
 const passwordField = document.getElementById("passwordField");
 const submitBtn = document.getElementById("submitBtn");
 
+const yearInput = studentForm.yearOfStudy;
+
+yearInput.addEventListener("input", () => {
+  // Remove non-digit characters
+  yearInput.value = yearInput.value.replace(/\D/g, "");
+
+  // Limit to a single digit
+  if (yearInput.value.length > 1) {
+    yearInput.value = yearInput.value.slice(0, 1);
+  }
+
+  // Only allow 1-3
+  if (yearInput.value < 1) yearInput.value = "";
+  if (yearInput.value > 3) yearInput.value = "3";
+});
+// -------------------------
+// Populate DOB Day & Year
+// -------------------------
+const dobDay = studentForm.dobDay;
+const dobYear = studentForm.dobYear;
+
+for (let i = 1; i <= 31; i++) {
+  const option = document.createElement("option");
+  option.value = i.toString().padStart(2, "0");
+  option.textContent = i;
+  dobDay.appendChild(option);
+}
+
+const currentYear = new Date().getFullYear();
+for (let y = currentYear; y >= currentYear - 50; y--) {
+  const option = document.createElement("option");
+  option.value = y;
+  option.textContent = y;
+  dobYear.appendChild(option);
+}
+
 // -------------------------
 // MODE FUNCTIONS
 // -------------------------
 function setAddMode() {
-  passwordField.required = true;          // Required for adding
+  passwordField.required = true;
   studentForm.reset();
   document.getElementById("studentId").value = "";
   formTitle.textContent = "Add New Student";
@@ -19,18 +54,34 @@ function setAddMode() {
 }
 
 function setEditMode(student) {
-  passwordField.required = false;         // Optional for editing
+  passwordField.required = false;
   formTitle.textContent = "Edit Student";
   submitBtn.textContent = "Update";
   cancelEditBtn.classList.remove("hidden");
 
   document.getElementById("studentId").value = student.student_id;
-  studentForm.fullName.value = student.full_name;
-  studentForm.email.value = student.email;
+  studentForm.firstName.value = student.first_name;
+  studentForm.lastName.value = student.last_name;
+  studentForm.gender.value = student.gender || "";
+  
+  if (student.date_of_birth) {
+    const dob = new Date(student.date_of_birth);
+    studentForm.dobDay.value = dob.getDate().toString().padStart(2,"0");
+    studentForm.dobMonth.value = (dob.getMonth()+1).toString().padStart(2,"0");
+    studentForm.dobYear.value = dob.getFullYear();
+  }
+
   studentForm.rollNumber.value = student.roll_number;
-  studentForm.department.value = student.department;
-  studentForm.yearOfStudy.value = student.year_of_study;
-  passwordField.value = "";               // Blank by default
+  studentForm.stream.value = student.stream || "";
+  studentForm.honors.value = student.honors || "";
+  studentForm.department.value = student.department || "";
+  studentForm.yearOfStudy.value = student.year_of_study || "";
+  studentForm.email.value = student.email || "";
+  studentForm.phone.value = student.phone || "";
+  studentForm.address.value = student.address || "";
+  studentForm.guardianName.value = student.guardian_name || "";
+  studentForm.guardianContact.value = student.guardian_contact || "";
+  passwordField.value = "";
 }
 
 // -------------------------
@@ -47,11 +98,11 @@ async function fetchStudents() {
       const tr = document.createElement("tr");
       tr.innerHTML = `
         <td class="border p-2">${student.student_id}</td>
-        <td class="border p-2">${student.full_name}</td>
-        <td class="border p-2">${student.email}</td>
+        <td class="border p-2">${student.first_name} ${student.last_name}</td>
+        <td class="border p-2">${student.email || ''}</td>
         <td class="border p-2">${student.roll_number}</td>
-        <td class="border p-2">${student.department}</td>
-        <td class="border p-2">${student.year_of_study}</td>
+        <td class="border p-2">${student.department || ''}</td>
+        <td class="border p-2">${student.year_of_study || ''}</td>
         <td class="border p-2 flex gap-2">
           <button class="bg-yellow-400 px-2 py-1 rounded editBtn">Edit</button>
           <button class="bg-red-500 text-white px-2 py-1 rounded deleteBtn">Delete</button>
@@ -59,10 +110,7 @@ async function fetchStudents() {
       `;
       studentTableBody.appendChild(tr);
 
-      // Edit button
       tr.querySelector(".editBtn").addEventListener("click", () => setEditMode(student));
-
-      // Delete button
       tr.querySelector(".deleteBtn").addEventListener("click", () => deleteStudent(student.student_id));
     });
   } catch (err) {
@@ -78,17 +126,29 @@ studentForm.addEventListener("submit", async (e) => {
   e.preventDefault();
 
   const formData = new FormData(studentForm);
+  
+  // Combine DOB
+  const dob = `${formData.get("dobYear")}-${formData.get("dobMonth")}-${formData.get("dobDay")}`;
+
   const data = {
-    id: formData.get("id"),                // student_id
-    fullName: formData.get("fullName"),
-    email: formData.get("email"),
+    id: formData.get("id"),
+    firstName: formData.get("firstName"),
+    lastName: formData.get("lastName"),
+    gender: formData.get("gender"),
+    dateOfBirth: dob,
     rollNumber: formData.get("rollNumber"),
+    stream: formData.get("stream"),
+    honors: formData.get("honors"),
     department: formData.get("department"),
-    yearOfStudy: formData.get("yearOfStudy"),
-    password: formData.get("password")     // may be blank
+   yearOfStudy: parseInt(formData.get("yearOfStudy")), 
+    email: formData.get("email"),
+    phone: formData.get("phone"),
+    address: formData.get("address"),
+    guardianName: formData.get("guardianName"),
+    guardianContact: formData.get("guardianContact"),
+    password: formData.get("password")
   };
 
-  // If password is empty, remove it so backend doesn't update
   if (!data.password) delete data.password;
 
   const url = data.id
@@ -106,7 +166,7 @@ studentForm.addEventListener("submit", async (e) => {
 
     if (res.ok) {
       alert(result.message || "Success!");
-      setAddMode();      // Switch back to Add mode
+      setAddMode();
       fetchStudents();
     } else {
       alert(result.message || "Failed!");
