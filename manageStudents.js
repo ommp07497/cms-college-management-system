@@ -127,28 +127,27 @@ studentForm.addEventListener("submit", async (e) => {
 
   const formData = new FormData(studentForm);
   
-  // Combine DOB
-  const dob = `${formData.get("dobYear")}-${formData.get("dobMonth")}-${formData.get("dobDay")}`;
-
-  const data = {
-    id: formData.get("id"),
-    firstName: formData.get("firstName"),
-    lastName: formData.get("lastName"),
-    gender: formData.get("gender"),
-    dateOfBirth: dob,
-    rollNumber: formData.get("rollNumber"),
-    stream: formData.get("stream"),
-    honors: formData.get("honors"),
-    department: formData.get("department"),
-   yearOfStudy: parseInt(formData.get("yearOfStudy")), 
-    email: formData.get("email"),
-    phone: formData.get("phone"),
-    address: formData.get("address"),
-    guardianName: formData.get("guardianName"),
-    guardianContact: formData.get("guardianContact"),
-    password: formData.get("password")
-  };
-
+ const data = {
+  id: formData.get("id"),
+  firstName: formData.get("firstName"),
+  lastName: formData.get("lastName"),
+  gender: formData.get("gender"),
+  dobDay: formData.get("dobDay"),
+  dobMonth: formData.get("dobMonth"),
+  dobYear: formData.get("dobYear"),
+  rollNumber: formData.get("rollNumber"),
+  stream: formData.get("stream"),
+  honors: formData.get("honors"),
+  department: formData.get("department"),
+  yearOfStudy: parseInt(formData.get("yearOfStudy")),
+  email: formData.get("email"),
+  phone: formData.get("phone"),
+  address: formData.get("address"),
+  guardianName: formData.get("guardianName"),
+  guardianContact: formData.get("guardianContact"),
+  password: formData.get("password")
+};
+  
   if (!data.password) delete data.password;
 
   const url = data.id
