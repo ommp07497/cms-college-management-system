@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manage Notices</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 text-gray-900">
+
+  <!-- Navbar -->
+  <header class="bg-gray-800 text-white p-4 flex justify-between items-center">
+    <h1 class="text-2xl font-bold">📢 Manage Notices</h1>
+    <button id="logoutBtn" class="bg-red-500 px-4 py-2 rounded hover:bg-red-600">Logout</button>
+  </header>
+
+  <main class="max-w-7xl mx-auto p-6 grid gap-6">
+
+    <!-- Add/Edit Notice Form -->
+    <div class="bg-white p-6 rounded-xl shadow-md w-full">
+      <h2 class="text-xl font-semibold mb-4" id="formTitle">Add New Notice</h2>
+      <form id="noticeForm" class="grid gap-4">
+        <input type="hidden" name="id" id="noticeId">
+
+        <input type="text" name="title" placeholder="Notice Title" class="w-full p-2 border rounded" required>
+        <textarea name="description" placeholder="Notice Description" class="w-full p-2 border rounded" rows="4" required></textarea>
+        
+        <select name="targetRole" class="w-full p-2 border rounded">
+          <option value="all" selected>All</option>
+          <option value="student">Students</option>
+          <option value="teacher">Teachers</option>
+        </select>
+
+        <div class="flex flex-col sm:flex-row gap-2">
+          <button type="submit" id="submitBtn" class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 flex-1">Add Notice</button>
+          <button type="button" id="cancelEdit" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 flex-1 hidden">Cancel</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Notices Table -->
+    <div class="bg-white p-6 rounded-xl shadow-md overflow-x-auto w-full">
+      <h2 class="text-xl font-semibold mb-4">All Notices</h2>
+      <table class="w-full border-collapse border min-w-[600px]">
+        <thead>
+          <tr class="bg-gray-200">
+            <th class="border p-2">ID</th>
+            <th class="border p-2">Title</th>
+            <th class="border p-2">Description</th>
+            <th class="border p-2">Target Role</th>
+            <th class="border p-2">Created At</th>
+            <th class="border p-2">Actions</th>
+          </tr>
+        </thead>
+        <tbody id="noticeTableBody"></tbody>
+      </table>
+    </div>
+
+  </main>
+
+  <footer class="bg-gray-900 text-gray-300 text-center p-4 mt-6">
+    &copy; 2025 N.C. College
+  </footer>
+
+  <script src="manageNotices.js"></script>
+  <script>
+    document.getElementById("logoutBtn").addEventListener("click", () => {
+      if(confirm("Are you sure you want to logout?")) window.location.href = "index.html";
+    });
+  </script>
+</body>
+</html>
