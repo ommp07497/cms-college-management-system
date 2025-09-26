@@ -19,23 +19,122 @@
     <!-- Add/Edit Student Form -->
      <div class="bg-white p-6 rounded-xl shadow-md w-full">
       <h2 class="text-xl font-semibold mb-4" id="formTitle">Add New Student</h2>
-      <form id="studentForm" class="grid gap-4">
-        <input type="hidden" name="id" id="studentId">
-        <input type="text" name="fullName" placeholder="Full Name" class="w-full p-2 border rounded" required>
-        <input type="email" name="email" placeholder="Email" class="w-full p-2 border rounded" required>
-        <input type="text" name="rollNumber" placeholder="Roll Number" class="w-full p-2 border rounded" required>
-        <input type="text" name="department" placeholder="Department" class="w-full p-2 border rounded" required>
-        <input type="text" name="yearOfStudy" placeholder="Year of Study" class="w-full p-2 border rounded" required>
-      <input type="password" id="passwordField" name="password" placeholder="Password" class="w-full p-2 border rounded" required>
-        <div class="flex flex-col sm:flex-row gap-2">
-         <button type="submit" id="submitBtn" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 flex-1">
-  Add Student
-</button>
-          <button type="button" id="cancelEdit" class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 flex-1 hidden">
-            Cancel
-          </button>
-        </div>
-      </form>
+      <form id="studentForm" class="grid gap-6">
+
+  <input type="hidden" name="id" id="studentId">
+
+  <!-- 🔹 Basic Info -->
+  <div class="bg-gray-50 p-4 rounded-lg shadow-inner grid gap-4">
+    <h3 class="font-semibold text-lg mb-2">Basic Information</h3>
+    <div class="grid sm:grid-cols-2 gap-4">
+      <input type="text" name="firstName" placeholder="First Name" class="p-2 border rounded" required>
+      <input type="text" name="lastName" placeholder="Last Name" class="p-2 border rounded" required>
+    </div>
+    <div class="grid sm:grid-cols-2 gap-4">
+      <select name="gender" class="p-2 border rounded" required>
+        <option value="" disabled selected>Select Gender</option>
+        <option value="Male">Male</option>
+        <option value="Female">Female</option>
+        <option value="Other">Other</option>
+      </select>
+     <!-- Date of Birth -->
+<div>
+  <label class="block mb-1 font-semibold">Date of Birth</label>
+  <div class="grid sm:grid-cols-3 gap-4">
+    <select name="dobDay" class="p-2 border rounded" required>
+      <option value="" disabled selected>Day</option>
+      <!-- JS will populate 1-31 -->
+    </select>
+    <select name="dobMonth" class="p-2 border rounded" required>
+      <option value="" disabled selected>Month</option>
+      <option value="01">January</option>
+      <option value="02">February</option>
+      <option value="03">March</option>
+      <option value="04">April</option>
+      <option value="05">May</option>
+      <option value="06">June</option>
+      <option value="07">July</option>
+      <option value="08">August</option>
+      <option value="09">September</option>
+      <option value="10">October</option>
+      <option value="11">November</option>
+      <option value="12">December</option>
+    </select>
+    <select name="dobYear" class="p-2 border rounded" required>
+      <option value="" disabled selected>Year</option>
+      <!-- JS will populate years -->
+    </select>
+  </div>
+</div> 
+      </div>
+    <input type="text" name="rollNumber" placeholder="Roll Number" class="p-2 border rounded" required>
+  </div>
+
+  <!-- 🔹 Academic Info -->
+  <div class="bg-gray-50 p-4 rounded-lg shadow-inner grid gap-4">
+    <h3 class="font-semibold text-lg mb-2">Academic Information</h3>
+    <div class="grid sm:grid-cols-2 gap-4">
+      <select name="stream" class="p-2 border rounded" required>
+        <option value="" disabled selected>Select Stream</option>
+        <option value="+2 Arts">+2 Arts</option>
+        <option value="+2 Science">+2 Science</option>
+        <option value="+2 Commerce">+2 Commerce</option>
+        <option value="+3 Arts">+3 Arts</option>
+        <option value="+3 Science">+3 Science</option>
+        <option value="+3 Commerce">+3 Commerce</option>
+        <option value="BCA">BCA</option>
+        <option value="BBA">BBA</option>
+      </select>
+      <input type="text" name="honors" placeholder="Honors (for +3 only)" class="p-2 border rounded">
+    </div>
+    <div class="grid sm:grid-cols-2 gap-4">
+      <input type="text" name="department" placeholder="Department" class="p-2 border rounded">
+     <select name="yearOfStudy" class="p-2 border rounded" required>
+  <option value="" disabled selected>Select Year</option>
+  <option value="1">1st Year</option>
+  <option value="2">2nd Year</option>
+  <option value="3">3rd Year</option>
+</select>
+      
+      </div>
+  </div>
+
+  <!-- 🔹 Contact Info -->
+  <div class="bg-gray-50 p-4 rounded-lg shadow-inner grid gap-4">
+    <h3 class="font-semibold text-lg mb-2">Contact Information</h3>
+    <div class="grid sm:grid-cols-2 gap-4">
+      <input type="email" name="email" placeholder="Email" class="p-2 border rounded" required>
+      <input type="text" name="phone" placeholder="Phone" class="p-2 border rounded">
+    </div>
+    <textarea name="address" placeholder="Address" class="p-2 border rounded w-full"></textarea>
+  </div>
+
+  <!-- 🔹 Guardian Info -->
+  <div class="bg-gray-50 p-4 rounded-lg shadow-inner grid gap-4">
+    <h3 class="font-semibold text-lg mb-2">Guardian Information</h3>
+    <div class="grid sm:grid-cols-2 gap-4">
+      <input type="text" name="guardianName" placeholder="Guardian Name" class="p-2 border rounded">
+      <input type="text" name="guardianContact" placeholder="Guardian Contact" class="p-2 border rounded">
+    </div>
+  </div>
+
+  <!-- 🔹 Password -->
+  <div class="bg-gray-50 p-4 rounded-lg shadow-inner grid gap-4">
+    <h3 class="font-semibold text-lg mb-2">Password</h3>
+    <input type="password" id="passwordField" name="password" placeholder="Password" class="p-2 border rounded" required>
+  </div>
+
+  <!-- 🔹 Actions -->
+  <div class="flex flex-col sm:flex-row gap-4">
+    <button type="submit" id="submitBtn" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 flex-1">
+      Add Student
+    </button>
+    <button type="button" id="cancelEdit" class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 flex-1 hidden">
+      Cancel
+    </button>
+  </div>
+
+</form>
     </div>
 
     <!-- Students Table -->
