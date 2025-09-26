@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manage Courses</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 text-gray-900">
+
+  <!-- Navbar -->
+  <header class="bg-gray-800 text-white p-4 flex justify-between items-center">
+    <h1 class="text-2xl font-bold">📚 Manage Courses</h1>
+    <button id="logoutBtn" class="bg-red-500 px-4 py-2 rounded hover:bg-red-600">Logout</button>
+  </header>
+
+  <!-- Main Content -->
+  <main class="max-w-7xl mx-auto p-6 grid gap-6">
+
+    <!-- Courses Table -->
+    <div class="bg-white p-6 rounded-xl shadow-md overflow-x-auto w-full">
+      <h2 class="text-xl font-semibold mb-4">All Available Courses</h2>
+      <table class="w-full border-collapse border min-w-[600px]">
+        <thead>
+          <tr class="bg-gray-200">
+            <th class="border p-2">ID</th>
+            <th class="border p-2">Stream</th>
+            <th class="border p-2">Honors</th>
+          </tr>
+        </thead>
+        <tbody id="courseTableBody">
+          <!-- JS will populate rows -->
+        </tbody>
+      </table>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-gray-900 text-gray-300 text-center p-4 mt-6">
+    &copy; 2025 N.C. College
+  </footer>
+
+  <script src="manageCourses.js"></script>
+  <script>
+    document.getElementById("logoutBtn").addEventListener("click", () => {
+      if(confirm("Are you sure you want to logout?")) window.location.href = "index.html";
+    });
+  </script>
+</body>
+</html>
